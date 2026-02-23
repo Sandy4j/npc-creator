@@ -1,0 +1,124 @@
+{
+  "colors": {
+	"Porcelain": ["#ffffff", "#ffe3cd", "#e5b99d", "#b07e5f"],
+	"Light": ["#ffffff", "#FFDFCE", "#e8b7a4", "#bb7c6c"],
+	"Beige": ["#ffe7e5", "#ffcab9", "#E39D97", "#b96c6b"],
+	"Brown": ["#ffdbc3", "#D8A084", "#BC7862", "#965042"],
+	"Tanned": ["#e6b7a7", "#AB7466", "#8B4B42", "#6a3636"],
+	"Dark": ["#8f6959", "#644138", "#4E2D29", "#3D1C1B"],
+	"Ash": ["#7e7e78", "#40403a", "#1e1e15", "#0f0f08"],
+	"Brunette": ["#8d7a74", "#5f4a4a", "#412e31", "#2a191f"],
+	"Sunburnt": ["#985f4a", "#67483B", "#3D2922", "#271613"],
+	"Blonde": ["#ffe890", "#eab94f", "#c58728", "#8c4d1d"],
+	"Cream": ["#FFF1C9", "#E6CA9A", "#C5915F", "#985D36"],
+	"Ivory": ["#d4bc94", "#aa7e4e", "#8c531d", "#61310A"],
+	"Red": ["#EC7C7D", "#BF4050", "#9C2C41", "#79102A"],
+	"Ginger": ["#ffc6a0", "#e89055", "#bf5b38", "#963639"],
+	"Pink": ["#FFD7EC", "#FFACDD", "#E070B4", "#AD3984"],
+	"White": ["#fffefe", "#fefdfd", "#c5bac4", "#877986"],
+	"Offwhite": ["#fffefe", "#fff9e0", "#c8bc9c", "#96836a"],
+	"Charcoal": ["#969696", "#757575", "#55514e", "#3b332f"],
+	"Clay": ["#a27b63", "#7c5548", "#5B362F", "#3A1A18"],
+	"Rose": ["#E05774", "#AA304A", "#78122D", "#58001B"],
+	"Crimson": ["#f05b50", "#b72c2a", "#9c1922", "#6a0319"],
+	"Grass": ["#60914d", "#356c2d", "#174E19", "#002d07"],
+	"Olive": ["#b1cea4", "#7f9766", "#5c6c48", "#42462f"],
+	"Green": ["#acff62", "#2cc016", "#018725", "#006230"],
+	"Lime": ["#dbeb6a", "#bec249", "#878636", "#57562d"],
+	"Yellow": ["#fff993", "#ffd619", "#d5990e", "#ab6400"],
+	"Orange": ["#ffce77", "#ff9921", "#bd6629", "#8a3616"],
+	"Coral": ["#ffcecd", "#ff7d95", "#d25b84", "#9e3a6b"],
+	"Magenta": ["#ff88cd", "#df33a6", "#ab0094", "#72006c"],
+	"Violet": ["#c3a2ff", "#7b34f3", "#3f14bb", "#1c008a"],
+	"Azure": ["#82b5eb", "#4e61ac", "#323470", "#1f194e"],
+	"Blue": ["#158fff", "#005de0", "#0036b7", "#001b8d"],
+	"Cloud": ["#A6BFC8", "#7590A9", "#59668D", "#44416E"],
+	"Teal": ["#C9EFE7", "#80C9C5", "#549AA4", "#205670"]
+  },
+  "outfit_types": {
+	"NPC_Hacker": {
+	  "young_male": {
+		"hair_type": [["Beanie", 15], ["Bowlcut", 15], ["Wavyshort", 15], ["Modcut", 15], ["Crew", 5], ["SweptBackLong", 5]],
+		"hair_colors": [["Ash", 25], ["Sunburnt", 25], ["Blonde", 15], ["Red", 10], ["Ginger", 10], ["Pink", 5], ["Crimson", 5], ["Grass", 15], ["Green", 5], ["Orange", 10], ["Magenta", 5], ["Violet", 10], ["Blue", 5], ["Teal", 10]],
+		"accessories": [["none", 35], ["GlassesClassic", 10], ["Mask", 10], ["GlassesMask", 10], ["GlassesCircleRed", 15], ["ARHeadSet", 10]],
+		"accessory_colors": [["White", 5], ["Offwhite", 5], ["Charcoal", 5], ["Clay", 5], ["Rose", 5], ["Crimson", 5], ["Grass", 5], ["Olive", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Coral", 5], ["Magenta", 5], ["Violet", 5], ["Azure", 5], ["Blue", 5], ["Cloud", 5], ["Teal", 5]],
+		"outfit_colors": [["Ash", 5], ["Red", 5], ["White", 5], ["Charcoal", 5], ["Clay", 5], ["Crimson", 5], ["Grass", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Magenta", 5], ["Violet", 5], ["Blue", 5], ["Teal", 5]],
+		"eye_colors": [["Ash", 5], ["Brunette", 5], ["Sunburnt", 5], ["Blonde", 5], ["Cream", 5], ["Ivory", 5], ["Red", 5], ["Ginger", 5], ["Pink", 5], ["White", 5], ["Offwhite", 5], ["Charcoal", 5], ["Clay", 5], ["Rose", 5], ["Crimson", 5], ["Grass", 5], ["Olive", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Coral", 5], ["Magenta", 5], ["Violet", 5], ["Azure", 5], ["Blue", 5], ["Cloud", 5], ["Teal", 5]],
+		"body_colors": [["Porcelain", 10], ["Light", 10], ["Beige", 10], ["Brown", 10], ["Tanned", 10], ["Dark", 10]]
+	  }
+	},
+	"NPC_Student": {
+	  "young_male": {
+		"hair_type": [["Default", 15], ["Midpart", 15], ["Bowlcut", 15], ["Mullet", 15], ["Sidepart", 5], ["SweptbackFade", 5]],
+		"hair_colors": [["Brunette", 1], ["Sunburnt", 1], ["Blonde", 1], ["Cream", 1], ["Ivory", 1], ["Ginger", 1]],
+		"accessories": [["none", 50], ["GlassesClassic", 10]],
+		"accessory_colors": [["White", 5], ["Offwhite", 5], ["Charcoal", 5], ["Clay", 5], ["Rose", 5], ["Crimson", 5], ["Grass", 5], ["Olive", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Coral", 5], ["Magenta", 5], ["Violet", 5], ["Azure", 5], ["Blue", 5], ["Cloud", 5], ["Teal", 5]],
+		"outfit_colors": [["Ash", 5], ["Brunette", 5], ["Sunburnt", 5], ["Blonde", 5], ["Cream", 5], ["Ivory", 5], ["Red", 5], ["Ginger", 5], ["Pink", 5], ["White", 0], ["Offwhite", 0], ["Charcoal", 5], ["Clay", 5], ["Rose", 5], ["Crimson", 5], ["Grass", 5], ["Olive", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Coral", 5], ["Magenta", 5], ["Violet", 5], ["Azure", 5], ["Blue", 5], ["Cloud", 5], ["Teal", 5]],
+		"eye_colors": [["Blonde", 20], ["Ivory", 20], ["Charcoal", 15], ["Clay", 15], ["Orange", 5], ["Olive", 5], ["Lime", 5], ["Azure", 5], ["Cloud", 5], ["Teal", 5]],
+		"body_colors": [["Light", 35], ["Beige", 20]]
+	  }
+	},
+	"NPC_Laborer": {
+	  "young_male": {
+		"hair_type": [["Cap", 15], ["ReverseCap", 15], ["BucketCurly", 15], ["SideSwept", 15], ["Beanie", 5], ["Crew", 5]],
+		"hair_colors": [["Ash", 1], ["Brunette", 1], ["Sunburnt", 1], ["Blonde", 1], ["Red", 1], ["Ginger", 1]],
+		"accessories": [["none", 90], ["Mask", 10]],
+		"accessory_colors": [["Offwhite", 5], ["Charcoal", 5]],
+		"outfit_colors": [["Rose", 5], ["Crimson", 5], ["Grass", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Magenta", 5], ["Azure", 5], ["Blue", 5], ["Teal", 5]],
+		"eye_colors": [["Ash", 10], ["Brunette", 10], ["Sunburnt", 5]],
+		"body_colors": [["Brown", 15], ["Tanned", 15], ["Dark", 25]]
+	  }
+	},
+	"NPC_Tourist": {
+	  "young_male": {
+		"hair_type": [["SideSwept", 15], ["Manbun", 15], ["Modcut", 15], ["Mobbang", 15], ["Midpart", 5], ["Brocolli", 5]],
+		"hair_colors": [["Ash", 15], ["Brunette", 15], ["Sunburnt", 5], ["Blonde", 15], ["Cream", 5], ["Ivory", 5], ["Red", 5], ["Ginger", 15], ["Pink", 5], ["Rose", 15], ["Azure", 5], ["Teal", 5]],
+		"accessories": [["none", 50], ["GlassesAviatorBlack", 15], ["GlassesTeardropBlue", 10], ["GlassesClassic", 5]],
+		"accessory_colors": [["White", 5], ["Offwhite", 5], ["Charcoal", 5], ["Clay", 5], ["Rose", 5], ["Crimson", 5], ["Grass", 5], ["Olive", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Coral", 5], ["Magenta", 5], ["Violet", 5], ["Azure", 5], ["Blue", 5], ["Cloud", 5], ["Teal", 5]],
+		"outfit_colors": [["Ash", 5], ["Cream", 5], ["Ivory", 5], ["Pink", 5], ["Rose", 5], ["Crimson", 5], ["Olive", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 0], ["Coral", 5], ["Azure", 5], ["Cloud", 5], ["Teal", 5]],
+		"eye_colors": [["Ash", 5], ["Brunette", 5], ["Sunburnt", 5], ["Blonde", 5], ["Cream", 5], ["Ivory", 5], ["Red", 5], ["Ginger", 5], ["Pink", 5], ["White", 5], ["Offwhite", 5], ["Charcoal", 5], ["Clay", 5], ["Rose", 5], ["Crimson", 5], ["Grass", 5], ["Olive", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Coral", 5], ["Magenta", 5], ["Violet", 5], ["Azure", 5], ["Blue", 5], ["Cloud", 5], ["Teal", 5]],
+		"body_colors": [["Porcelain", 10], ["Light", 10], ["Beige", 10], ["Brown", 10], ["Tanned", 10], ["Dark", 10]]
+	  },
+	  "young_female": {
+		"hair_type": [["Bun", 15], ["SummerHat", 15], ["Dog", 15], ["LowPonytail", 15], ["LongBang", 5], ["Koala", 5]],
+		"hair_colors": [["Ash", 15], ["Brunette", 15], ["Sunburnt", 5], ["Blonde", 15], ["Cream", 5], ["Ivory", 15], ["Red", 5], ["Ginger", 15], ["Pink", 5], ["Rose", 15], ["Azure", 5], ["Teal", 5]],
+		"accessories": [["none", 50], ["GlassesAviatorBlack", 15], ["GlassesTeardropBlue", 10], ["GlassesClassic", 5], ["EarringTop", 15], ["EarringBottom", 45]],
+		"accessory_colors": [["White", 5], ["Offwhite", 5], ["Charcoal", 5], ["Clay", 5], ["Rose", 5], ["Crimson", 5], ["Grass", 5], ["Olive", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Coral", 5], ["Magenta", 5], ["Violet", 5], ["Azure", 5], ["Blue", 5], ["Cloud", 5], ["Teal", 5]],
+		"outfit_colors": [["Ash", 5], ["Cream", 5], ["Ivory", 5], ["Pink", 5], ["Rose", 5], ["Crimson", 5], ["Olive", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 0], ["Coral", 5], ["Azure", 5], ["Cloud", 5], ["Teal", 5]],
+		"eye_colors": [["Ash", 5], ["Brunette", 5], ["Sunburnt", 5], ["Blonde", 5], ["Cream", 5], ["Ivory", 5], ["Red", 5], ["Ginger", 5], ["Pink", 5], ["White", 5], ["Offwhite", 5], ["Charcoal", 5], ["Clay", 5], ["Rose", 5], ["Crimson", 5], ["Grass", 5], ["Olive", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Coral", 5], ["Magenta", 5], ["Violet", 5], ["Azure", 5], ["Blue", 5], ["Cloud", 5], ["Teal", 5]],
+		"body_colors": [["Porcelain", 10], ["Light", 10], ["Beige", 10], ["Brown", 10], ["Tanned", 10], ["Dark", 10]]
+	  }
+	},
+	"NPC_Jogger": {
+	  "young_male": {
+		"hair_type": [["Crew", 15], ["SweptbackFade", 15], ["SweptBackLong", 15], ["Sunvisor", 15], ["Cap", 5], ["Manbun", 5]],
+		"hair_colors": [["Ash", 1], ["Brunette", 1], ["Sunburnt", 1], ["Blonde", 1], ["Cream", 1], ["Ivory", 1], ["Red", 1], ["Ginger", 1], ["Pink", 1]],
+		"accessories": [["none", 50], ["GlassesSportRed", 15], ["Mask", 5]],
+		"accessory_colors": [["White", 5], ["Offwhite", 5], ["Charcoal", 5], ["Clay", 5], ["Rose", 5], ["Crimson", 5], ["Grass", 5], ["Olive", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Coral", 5], ["Magenta", 5], ["Violet", 5], ["Azure", 5], ["Blue", 5], ["Cloud", 5], ["Teal", 5]],
+		"outfit_colors": [["Ash", 5], ["Red", 5], ["White", 5], ["Charcoal", 5], ["Clay", 5], ["Crimson", 5], ["Grass", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Magenta", 5], ["Violet", 5], ["Blue", 5], ["Teal", 5]],
+		"eye_colors": [["Ash", 5], ["Brunette", 5], ["Sunburnt", 5], ["Blonde", 5], ["Cream", 5], ["Ivory", 5], ["Red", 5], ["Ginger", 5], ["Pink", 5], ["White", 5], ["Offwhite", 5], ["Charcoal", 5], ["Clay", 5], ["Rose", 5], ["Crimson", 5], ["Grass", 5], ["Olive", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Coral", 5], ["Magenta", 5], ["Violet", 5], ["Azure", 5], ["Blue", 5], ["Cloud", 5], ["Teal", 5]],
+		"body_colors": [["Porcelain", 10], ["Light", 10], ["Beige", 10], ["Brown", 10], ["Tanned", 10], ["Dark", 10]]
+	  },
+	  "young_female": {
+		"hair_type": [["Ponytail", 15], ["Wolfcut", 15], ["Shortwing", 15], ["Koala", 15], ["CurlyPonytail", 5], ["Wolf", 5]],
+		"hair_colors": [["Ash", 15], ["Brunette", 5], ["Sunburnt", 15], ["Blonde", 5], ["Cream", 5], ["Ivory", 15], ["Red", 5], ["Ginger", 5], ["Pink", 15]],
+		"accessories": [["none", 50], ["GlassesSportRed", 15], ["Mask", 5]],
+		"accessory_colors": [["White", 5], ["Offwhite", 5], ["Charcoal", 5], ["Clay", 5], ["Rose", 5], ["Crimson", 5], ["Grass", 5], ["Olive", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Coral", 5], ["Magenta", 5], ["Violet", 5], ["Azure", 5], ["Blue", 5], ["Cloud", 5], ["Teal", 5]],
+		"outfit_colors": [["Ash", 5], ["Red", 5], ["White", 5], ["Charcoal", 5], ["Clay", 5], ["Crimson", 5], ["Grass", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Magenta", 5], ["Violet", 5], ["Blue", 5], ["Teal", 5]],
+		"eye_colors": [["Ash", 5], ["Brunette", 5], ["Sunburnt", 5], ["Blonde", 5], ["Cream", 5], ["Ivory", 5], ["Red", 5], ["Ginger", 5], ["Pink", 5], ["White", 5], ["Offwhite", 5], ["Charcoal", 5], ["Clay", 5], ["Rose", 5], ["Crimson", 5], ["Grass", 5], ["Olive", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Coral", 5], ["Magenta", 5], ["Violet", 5], ["Azure", 5], ["Blue", 5], ["Cloud", 5], ["Teal", 5]],
+		"body_colors": [["Porcelain", 10], ["Light", 10], ["Beige", 10], ["Brown", 10], ["Tanned", 10], ["Dark", 10]]
+	  }
+	},
+	"NPC_Streamer": {
+	  "young_female": {
+		"hair_type": [["LongBang", 15], ["Wolf", 15], ["Bob", 15], ["CurlyPonytail", 15], ["Dog", 5], ["Wolfcut", 5]],
+		"hair_colors": [["Ash", 15], ["Sunburnt", 20], ["Blonde", 15], ["Red", 15], ["Ginger", 10], ["Pink", 20], ["Crimson", 10], ["Grass", 15], ["Green", 15], ["Orange", 10], ["Magenta", 20], ["Violet", 10], ["Blue", 5], ["Teal", 20]],
+		"accessories": [["none", 15], ["EarringTop", 25]],
+		"accessory_colors": [["White", 5], ["Offwhite", 5], ["Charcoal", 5], ["Clay", 5], ["Rose", 5], ["Crimson", 5], ["Grass", 5], ["Olive", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Coral", 5], ["Magenta", 5], ["Violet", 5], ["Azure", 5], ["Blue", 5], ["Cloud", 5], ["Teal", 5]],
+		"outfit_colors": [["Ash", 5], ["Red", 5], ["White", 5], ["Charcoal", 5], ["Clay", 5], ["Crimson", 5], ["Grass", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Magenta", 5], ["Violet", 5], ["Blue", 5], ["Teal", 5]],
+		"eye_colors": [["Ash", 5], ["Brunette", 5], ["Sunburnt", 5], ["Blonde", 5], ["Cream", 5], ["Ivory", 5], ["Red", 5], ["Ginger", 5], ["Pink", 5], ["White", 5], ["Offwhite", 5], ["Charcoal", 5], ["Clay", 5], ["Rose", 5], ["Crimson", 5], ["Grass", 5], ["Olive", 5], ["Green", 5], ["Lime", 5], ["Yellow", 5], ["Orange", 5], ["Coral", 5], ["Magenta", 5], ["Violet", 5], ["Azure", 5], ["Blue", 5], ["Cloud", 5], ["Teal", 5]],
+		"body_colors": [["Porcelain", 10], ["Light", 10], ["Beige", 10], ["Brown", 10], ["Tanned", 10], ["Dark", 10]]
+	  }
+	}
+  }
+}

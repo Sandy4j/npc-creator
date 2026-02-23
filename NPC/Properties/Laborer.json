@@ -1,0 +1,69 @@
+{
+  "character_name": "NPC_Laborer",
+  "patron_wealth": "Low",
+  "partner_name": [],
+  "is_spawnable": true,
+  "is_evening_spawnable": true,
+  "is_night_spawnable": true,
+  "required_story_id_to_spawn": [],
+  "story_requirements": {
+    "UnlockCharacterRequirement": {
+      "StoryId": [
+        "CH1"
+      ],
+      "Visits": 0,
+      "Other_Visits": [
+      ],
+      "key_item": 0,
+      "Duration": 0,
+      "story_time": "default",
+      "spawn_override": "default",
+      "wealth_override": "default"
+    },
+    "CharacterProgressRequirements": "none"
+  },
+  "orders": {
+    "set0": {
+      "1": {
+        "entry_1_id": 4,
+        "entry_1_qty": 2,
+        "entry_2_id": 1,
+        "entry_2_qty": 1,
+        "traits": [],
+        "weighted_chance": 20
+      },
+      "2": {
+        "entry_1_id": 12,
+        "entry_1_qty": 2,
+        "entry_2_id": 10,
+        "entry_2_qty": 1,
+        "traits": [],
+        "weighted_chance": 20
+      },
+      "3": {
+        "entry_1_id": 5,
+        "entry_1_qty": 1,
+        "entry_2_id": 11,
+        "entry_2_qty": 2,
+        "traits": [],
+        "weighted_chance": 20
+      },
+      "4": {
+        "entry_1_id": 10,
+        "entry_1_qty": 1,
+        "entry_2_id": 12,
+        "entry_2_qty": 2,
+        "traits": [],
+        "weighted_chance": 20
+      },
+      "5": {
+        "entry_1_id": 9,
+        "entry_1_qty": 2,
+        "entry_2_id": 2,
+        "entry_2_qty": 1,
+        "traits": [],
+        "weighted_chance": 20
+      }
+    }
+  }
+}

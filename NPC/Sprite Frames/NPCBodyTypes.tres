@@ -1,0 +1,44 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://l4as64udb5xh"]
+
+[resource]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"AdultFemale",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"AdultMale",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"MechFemale",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"MechMale",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"OldFemale",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"OldMale",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"YoungFemale",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"YoungMale",
+"speed": 5.0
+}]

@@ -1,0 +1,47 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://b1cww43rpdg0r"]
+
+[ext_resource type="Texture2D" uid="uid://dwbn6eox5vkil" path="res://Assets/NPC/Body/Young/Male/face/character_large_npcyoungmale_happy_face_0000.png" id="1_bk8di"]
+[ext_resource type="Texture2D" uid="uid://bgauke1u3bmtw" path="res://Assets/NPC/Body/Young/Male/face/character_large_npcyoungmale_happy_face_0001.png" id="2_225n1"]
+[ext_resource type="Texture2D" uid="uid://duerrftxodn00" path="res://Assets/NPC/Body/Young/Male/face/character_large_npcyoungmale_happy_face_0002.png" id="3_2dvhn"]
+[ext_resource type="Texture2D" uid="uid://dvgvm0jwi1did" path="res://Assets/NPC/Body/Young/Male/face/character_large_npcyoungmale_happy_face_0003.png" id="4_44si2"]
+[ext_resource type="Texture2D" uid="uid://buwsm07dc7max" path="res://Assets/NPC/Body/Young/Male/face/character_large_npcyoungmale_happy_face_0004.png" id="5_3sgda"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_bk8di")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_225n1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_2dvhn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_225n1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_bk8di")
+}],
+"loop": false,
+"name": &"happy_blink",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_44si2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_3sgda")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_44si2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_bk8di")
+}],
+"loop": false,
+"name": &"happy_talk",
+"speed": 8.0
+}]

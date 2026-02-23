@@ -1,0 +1,14 @@
+[gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://c7l0wplei1npg"]
+
+[ext_resource type="Texture2D" uid="uid://us7bcyd2dokh" path="res://Assets/NPC/Costumes/Young/Male/character_large_npcyoungmale_outfit_student.png" id="1_88g8o"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_88g8o")
+}],
+"loop": false,
+"name": &"student",
+"speed": 5.0
+}]

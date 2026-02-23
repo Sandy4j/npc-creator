@@ -1,0 +1,492 @@
+[gd_scene load_steps=6 format=3 uid="uid://bbwnrxl1s3qdl"]
+
+[ext_resource type="Script" uid="uid://cfn5eoi3c32oj" path="res://UI/main.gd" id="1_crsyg"]
+[ext_resource type="Texture2D" uid="uid://bl7uun6gtrbiw" path="res://NPC/Body/Young/Male/character_large_npcyoungmale_body.png" id="2_r7jo0"]
+[ext_resource type="Script" uid="uid://cbrs0aopsggu5" path="res://UI/character_preview.gd" id="2_vgl0i"]
+[ext_resource type="Texture2D" uid="uid://bjlrmpagfulso" path="res://NPC/Hairs/Young/Male/character_large_npcyoungmale_hair_bowlcut.png" id="3_vgl0i"]
+[ext_resource type="Texture2D" uid="uid://bcuh6gbv8lnci" path="res://NPC/Accessories/Young/Male/character_large_npcyoungmale_accessory_glassesaviatorblack.png" id="4_wxu0l"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="Main" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_crsyg")
+
+[node name="Background" type="ColorRect" parent="Main"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12, 0.12, 0.15, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Main"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="MainLayout" type="HBoxContainer" parent="Main/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="LeftPanel" type="VBoxContainer" parent="Main/MarginContainer/MainLayout"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.2
+theme_override_constants/separation = 16
+
+[node name="PreviewLabel" type="Label" parent="Main/MarginContainer/MainLayout/LeftPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.7, 1)
+theme_override_font_sizes/font_size = 14
+text = "PREVIEW"
+horizontal_alignment = 1
+
+[node name="PreviewFrame" type="PanelContainer" parent="Main/MarginContainer/MainLayout/LeftPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PreviewArea" type="CenterContainer" parent="Main/MarginContainer/MainLayout/LeftPanel/PreviewFrame"]
+layout_mode = 2
+
+[node name="CharacterLayers" type="Control" parent="Main/MarginContainer/MainLayout/LeftPanel/PreviewFrame/PreviewArea"]
+custom_minimum_size = Vector2(350, 596)
+layout_mode = 2
+script = ExtResource("2_vgl0i")
+
+[node name="BodySprite" type="TextureRect" parent="Main/MarginContainer/MainLayout/LeftPanel/PreviewFrame/PreviewArea/CharacterLayers"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_r7jo0")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_lock_ = true
+
+[node name="OutfitSprite" type="TextureRect" parent="Main/MarginContainer/MainLayout/LeftPanel/PreviewFrame/PreviewArea/CharacterLayers"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_lock_ = true
+
+[node name="HairSprite" type="TextureRect" parent="Main/MarginContainer/MainLayout/LeftPanel/PreviewFrame/PreviewArea/CharacterLayers"]
+texture_filter = 1
+custom_minimum_size = Vector2(120, 140)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -59.0
+offset_top = 40.0
+offset_right = 61.0
+offset_bottom = 160.0
+grow_horizontal = 2
+texture = ExtResource("3_vgl0i")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AccessorySprite" type="TextureRect" parent="Main/MarginContainer/MainLayout/LeftPanel/PreviewFrame/PreviewArea/CharacterLayers"]
+texture_filter = 1
+custom_minimum_size = Vector2(120, 100)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -48.0
+offset_top = 38.0
+offset_right = 52.0
+offset_bottom = 118.0
+grow_horizontal = 2
+texture = ExtResource("4_wxu0l")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PlaceholderLabel" type="Label" parent="Main/MarginContainer/MainLayout/LeftPanel/PreviewFrame/PreviewArea"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.4, 0.5, 1)
+text = "[ No Sprite ]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ColorSwatchRow" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/LeftPanel"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="SwatchLabel" type="Label" parent="Main/MarginContainer/MainLayout/LeftPanel/ColorSwatchRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.8, 1)
+text = "Outfit Color:"
+
+[node name="SwatchHair" type="ColorRect" parent="Main/MarginContainer/MainLayout/LeftPanel/ColorSwatchRow"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+tooltip_text = "Hair"
+color = Color(0.5, 0.3, 0.2, 1)
+
+[node name="SwatchSkin" type="ColorRect" parent="Main/MarginContainer/MainLayout/LeftPanel/ColorSwatchRow"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+tooltip_text = "Skin"
+color = Color(0.9, 0.7, 0.5, 1)
+
+[node name="SwatchOutfit" type="ColorRect" parent="Main/MarginContainer/MainLayout/LeftPanel/ColorSwatchRow"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+tooltip_text = "Outfit"
+color = Color(0.2, 0.4, 0.8, 1)
+
+[node name="SwatchEyes" type="ColorRect" parent="Main/MarginContainer/MainLayout/LeftPanel/ColorSwatchRow"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+tooltip_text = "Eyes"
+color = Color(0.3, 0.6, 0.3, 1)
+
+[node name="RightPanel" type="VBoxContainer" parent="Main/MarginContainer/MainLayout"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="Main/MarginContainer/MainLayout/RightPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "CHARACTER CREATION"
+horizontal_alignment = 1
+
+[node name="HSeparator0" type="HSeparator" parent="Main/MarginContainer/MainLayout/RightPanel"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Main/MarginContainer/MainLayout/RightPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="OptionsContainer" type="VBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="RowNPCType" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer"]
+layout_mode = 2
+
+[node name="LabelNPCType" type="Label" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowNPCType"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.85, 1)
+text = "NPC Type"
+vertical_alignment = 1
+
+[node name="OptionNPCType" type="OptionButton" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowNPCType"]
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 6
+popup/item_0/text = "NPC_Hacker"
+popup/item_0/id = 0
+popup/item_1/text = "NPC_Student"
+popup/item_1/id = 1
+popup/item_2/text = "NPC_Laborer"
+popup/item_2/id = 2
+popup/item_3/text = "NPC_Tourist"
+popup/item_3/id = 3
+popup/item_4/text = "NPC_Jogger"
+popup/item_4/id = 4
+popup/item_5/text = "NPC_Streamer"
+popup/item_5/id = 5
+
+[node name="RowGender" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer"]
+layout_mode = 2
+
+[node name="LabelGender" type="Label" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowGender"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.85, 1)
+text = "Gender"
+vertical_alignment = 1
+
+[node name="OptionGender" type="OptionButton" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowGender"]
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 2
+popup/item_0/text = "Young Male"
+popup/item_0/id = 0
+popup/item_1/text = "Young Female"
+popup/item_1/id = 1
+
+[node name="HSeparator1" type="HSeparator" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer"]
+layout_mode = 2
+
+[node name="RowHairType" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer"]
+layout_mode = 2
+
+[node name="LabelHairType" type="Label" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowHairType"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.85, 1)
+text = "Hair Style"
+vertical_alignment = 1
+
+[node name="OptionHairType" type="OptionButton" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowHairType"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RowHairColor" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer"]
+layout_mode = 2
+
+[node name="LabelHairColor" type="Label" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowHairColor"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.85, 1)
+text = "Hair Color"
+vertical_alignment = 1
+
+[node name="OptionHairColor" type="OptionButton" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowHairColor"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HairColorSwatch" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowHairColor"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="HairSwatch1" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowHairColor/HairColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HairSwatch2" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowHairColor/HairColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HairSwatch3" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowHairColor/HairColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HairSwatch4" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowHairColor/HairColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HSeparator2" type="HSeparator" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer"]
+layout_mode = 2
+
+[node name="RowAccessory" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer"]
+layout_mode = 2
+
+[node name="LabelAccessory" type="Label" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowAccessory"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.85, 1)
+text = "Accessory"
+vertical_alignment = 1
+
+[node name="OptionAccessory" type="OptionButton" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowAccessory"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RowAccessoryColor" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer"]
+layout_mode = 2
+
+[node name="LabelAccessoryColor" type="Label" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowAccessoryColor"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.85, 1)
+text = "Accessory Color"
+vertical_alignment = 1
+
+[node name="OptionAccessoryColor" type="OptionButton" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowAccessoryColor"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AccColorSwatch" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowAccessoryColor"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="AccSwatch1" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowAccessoryColor/AccColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="AccSwatch2" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowAccessoryColor/AccColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="AccSwatch3" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowAccessoryColor/AccColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="AccSwatch4" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowAccessoryColor/AccColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HSeparator3" type="HSeparator" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer"]
+layout_mode = 2
+
+[node name="RowOutfitColor" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer"]
+layout_mode = 2
+
+[node name="LabelOutfitColor" type="Label" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowOutfitColor"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.85, 1)
+text = "Outfit Color"
+vertical_alignment = 1
+
+[node name="OptionOutfitColor" type="OptionButton" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowOutfitColor"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OutfitColorSwatch" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowOutfitColor"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="OutfitSwatch1" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowOutfitColor/OutfitColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="OutfitSwatch2" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowOutfitColor/OutfitColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="OutfitSwatch3" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowOutfitColor/OutfitColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="OutfitSwatch4" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowOutfitColor/OutfitColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HSeparator4" type="HSeparator" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer"]
+layout_mode = 2
+
+[node name="RowEyeColor" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer"]
+layout_mode = 2
+
+[node name="LabelEyeColor" type="Label" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowEyeColor"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.85, 1)
+text = "Eye Color"
+vertical_alignment = 1
+
+[node name="OptionEyeColor" type="OptionButton" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowEyeColor"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EyeColorSwatch" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowEyeColor"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="EyeSwatch1" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowEyeColor/EyeColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="EyeSwatch2" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowEyeColor/EyeColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="EyeSwatch3" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowEyeColor/EyeColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="EyeSwatch4" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowEyeColor/EyeColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="RowBodyColor" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer"]
+layout_mode = 2
+
+[node name="LabelBodyColor" type="Label" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowBodyColor"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.85, 1)
+text = "Skin Tone"
+vertical_alignment = 1
+
+[node name="OptionBodyColor" type="OptionButton" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowBodyColor"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BodyColorSwatch" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowBodyColor"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="BodySwatch1" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowBodyColor/BodyColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BodySwatch2" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowBodyColor/BodyColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BodySwatch3" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowBodyColor/BodyColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BodySwatch4" type="ColorRect" parent="Main/MarginContainer/MainLayout/RightPanel/ScrollContainer/OptionsContainer/RowBodyColor/BodyColorSwatch"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HSeparator5" type="HSeparator" parent="Main/MarginContainer/MainLayout/RightPanel"]
+layout_mode = 2
+
+[node name="ButtonRow" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/RightPanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="RandomizeButton" type="Button" parent="Main/MarginContainer/MainLayout/RightPanel/ButtonRow"]
+custom_minimum_size = Vector2(160, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "RANDOMIZE"
+
+[node name="ConfirmButton" type="Button" parent="Main/MarginContainer/MainLayout/RightPanel/ButtonRow"]
+custom_minimum_size = Vector2(160, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "CONFIRM"
+
+[node name="ResultLabel" type="Label" parent="Main/MarginContainer/MainLayout/RightPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 13
+horizontal_alignment = 1

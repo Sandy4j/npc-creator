@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://ejxsdoms44q0"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="CanvasGroup" type="CanvasGroup" parent="."]
+
+[node name="CharacterBody" type="Sprite2D" parent="CanvasGroup"]
+
+[node name="CharacterOutfit" type="Sprite2D" parent="CanvasGroup"]
+
+[node name="CharacterHair" type="Sprite2D" parent="CanvasGroup"]
+
+[node name="CharacterAcc" type="Sprite2D" parent="CanvasGroup"]

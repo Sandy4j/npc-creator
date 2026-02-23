@@ -1,0 +1,50 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://dabp6hbw3q1gb"]
+
+[ext_resource type="Texture2D" uid="uid://0l0hv1vlpgtj" path="res://Assets/NPC/Body/Young/Female/Face/character_large_npcyoungfemale_neutral_face_0000.png" id="1_y64mt"]
+[ext_resource type="Texture2D" uid="uid://dlnfn00yrq76q" path="res://Assets/NPC/Body/Young/Female/Face/character_large_npcyoungfemale_neutral_face_0001.png" id="2_jro5f"]
+[ext_resource type="Texture2D" uid="uid://ccmyyy8rolq8c" path="res://Assets/NPC/Body/Young/Female/Face/character_large_npcyoungfemale_neutral_face_0002.png" id="3_lre2d"]
+[ext_resource type="Texture2D" uid="uid://bu5w1bv0cw86o" path="res://Assets/NPC/Body/Young/Female/Face/character_large_npcyoungfemale_neutral_face_0003.png" id="4_kyt02"]
+[ext_resource type="Texture2D" uid="uid://bxijsvom8s6ep" path="res://Assets/NPC/Body/Young/Female/Face/character_large_npcyoungfemale_neutral_face_0004.png" id="5_wfkx0"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_y64mt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_jro5f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_lre2d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_jro5f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_y64mt")
+}],
+"loop": false,
+"name": &"neutral_blink",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_y64mt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_kyt02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_wfkx0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_kyt02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_y64mt")
+}],
+"loop": false,
+"name": &"neutral_talk",
+"speed": 8.0
+}]
