@@ -1,10 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://ejxsdoms44q0"]
+[gd_scene load_steps=11 format=3 uid="uid://q2cdo50eo2g1"]
 
 [ext_resource type="Shader" uid="uid://n35u8pwe071u" path="res://Shaders/shader1.gdshader" id="1_seurq"]
-[ext_resource type="Texture2D" uid="uid://bl7uun6gtrbiw" path="res://NPC/Body/Young/Male/character_large_npcyoungmale_body.png" id="1_u7iej"]
-[ext_resource type="Texture2D" uid="uid://ybygs1lnh7sf" path="res://NPC/Outfits/Young/Male/character_large_npcyoungmale_outfit_hacker.png" id="2_15382"]
-[ext_resource type="Texture2D" uid="uid://o6l7ihf7daou" path="res://NPC/Hairs/Young/Male/character_large_npcyoungmale_hair_wavyshort.png" id="3_seurq"]
-[ext_resource type="Texture2D" uid="uid://ct5nixgyhlu63" path="res://NPC/Accessories/Young/Male/character_large_npcyoungmale_accessory_mask.png" id="4_d436w"]
+[ext_resource type="Texture2D" uid="uid://bl7uun6gtrbiw" path="res://NPC/Body/Young/Male/character_large_npcyoungmale_body.png" id="1_body"]
+[ext_resource type="Texture2D" uid="uid://fsq5567i4rhe" path="res://NPC/Outfits/Young/Male/character_large_npcyoungmale_outfit_student.png" id="2_outfit"]
+[ext_resource type="Texture2D" uid="uid://bjlrmpagfulso" path="res://NPC/Hairs/Young/Male/character_large_npcyoungmale_hair_bowlcut.png" id="3_hair"]
+[ext_resource type="Texture2D" uid="uid://bcuh6gbv8lnci" path="res://NPC/Accessories/Young/Male/character_large_npcyoungmale_accessory_glassesaviatorblack.png" id="4_acc"]
 [ext_resource type="Material" uid="uid://s3piwpfcae72" path="res://Shaders/HairTemplate.tres" id="6_seurq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d436w"]
@@ -74,28 +74,28 @@ shader_parameter/replace_7 = Color(1, 0, 0, 1)
 [node name="CharacterBody" type="Sprite2D" parent="CanvasGroup"]
 texture_filter = 1
 material = SubResource("ShaderMaterial_d436w")
-texture = ExtResource("1_u7iej")
+texture = ExtResource("1_body")
 
 [node name="CharacterOutfit" type="Sprite2D" parent="CanvasGroup"]
 texture_filter = 1
 material = SubResource("ShaderMaterial_5c8jk")
-texture = ExtResource("2_15382")
+texture = ExtResource("2_outfit")
 
 [node name="CharacterHair" type="Sprite2D" parent="CanvasGroup"]
 texture_filter = 1
 material = SubResource("ShaderMaterial_3byji")
 position = Vector2(3, -186)
-texture = ExtResource("3_seurq")
+texture = ExtResource("3_hair")
 
 [node name="CharacterAcc" type="Sprite2D" parent="CanvasGroup"]
 texture_filter = 1
 material = SubResource("ShaderMaterial_mdx57")
 position = Vector2(0, -179)
-texture = ExtResource("4_d436w")
+texture = ExtResource("4_acc")
 offset = Vector2(2.5, 0)
 
 [node name="CharacterHair2" type="Sprite2D" parent="CanvasGroup"]
 texture_filter = 1
 material = ExtResource("6_seurq")
 position = Vector2(3, -186)
-texture = ExtResource("3_seurq")
+texture = ExtResource("3_hair")
