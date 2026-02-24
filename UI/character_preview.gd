@@ -1,48 +1,27 @@
 extends Control
 
-## Handle untuk preview NPC
+## Handle untuk preview NPC 
 
-@onready var body_sprite: TextureRect = $BodySprite
-@onready var outfit_sprite: TextureRect = $OutfitSprite
-@onready var hair_sprite: TextureRect = $HairSprite
-@onready var accessory_sprite: TextureRect = $AccessorySprite
+# Container untuk menampung instanced NPC scene
+var _npc_scene_instance: Node = null
+var _current_scene_path: String = ""
+
+# References ke sprite nodes dalam scene yang di-load
+var _body_sprite: Sprite2D = null
+var _outfit_sprite: Sprite2D = null
+var _hair_sprite: Sprite2D = null
+var _accessory_sprite: Sprite2D = null
 
 var placeholder_label: Label
 const DEFAULT_BODY_BASE_PALETTE = ["#ffffff", "#ffe3cd", "#e5b99d", "#b07e5f"]
 
-# posisi rambut sesuai gender dan npc_type
-const HAIR_OFFSET: Dictionary = {
-	"young_male": {
-		"NPC_Hacker": Vector2(120.0, 16.0),
-		"NPC_Student": Vector2(120.0, 16.0),
-		"NPC_Laborer": Vector2(120.0, 16.0),
-		"NPC_Tourist": Vector2(120.0, 16.0),
-		"NPC_Jogger": Vector2(120.0, 16.0),
-	},
-	"young_female": {
-		"NPC_Tourist": Vector2(116.0, 40.0),
-		"NPC_Jogger": Vector2(116.0, 40.0),
-		"NPC_Streamer": Vector2(116.0, 40.0),
-	},
+# Gender mapping untuk nama scene
+const GENDER_SCENE_MAP = {
+	"young_male": "YoungMale",
+	"young_female": "YoungFemale"
 }
 
-# posisi acc sesuai gender dan npc_type
-const ACCESSORY_OFFSET: Dictionary = {
-	"young_male": {
-		"NPC_Hacker": Vector2(119.0, 35.0),
-		"NPC_Student": Vector2(119.0, 35.0),
-		"NPC_Laborer": Vector2(119.0, 35.0),
-		"NPC_Tourist": Vector2(119.0, 35.0),
-		"NPC_Jogger": Vector2(119.0, 35.0),
-	},
-	"young_female": {
-		"NPC_Tourist": Vector2(115.0, 59.0),
-		"NPC_Jogger": Vector2(115.0, 59.0),
-		"NPC_Streamer": Vector2(115.0, 59.0),
-	},
-}
-
-# Gender mapping untuk nama folder/prefix
+# Gender mapping untuk nama folder/prefix texture
 const GENDER_FOLDER_MAP = {
 	"young_male": "Male",
 	"young_female": "Female"
@@ -85,23 +64,85 @@ func _ready() -> void:
 func set_data_manager(manager: NPCDataManager) -> void:
 	_data_manager = manager
 
-## Update sprite posisi sesuai dengan gender dan npc_type
-func update_sprite_positions(gender: String, npc_type: String) -> void:
-	var gender_offsets_hair = HAIR_OFFSET.get(gender, HAIR_OFFSET["young_male"])
-	var gender_offsets_acc  = ACCESSORY_OFFSET.get(gender, ACCESSORY_OFFSET["young_male"])
+## Generate scene path berdasarkan npc_type dan gender
+func _get_scene_path(npc_type: String, gender: String) -> String:
+	# npc_type format: "NPC_Hacker" -> "Hacker"
+	var type_name = npc_type.replace("NPC_", "")
+	var gender_name = GENDER_SCENE_MAP.get(gender, "YoungMale")
+	return "res://Scene/NPC%s%s.tscn" % [type_name, gender_name]
+
+## Load NPC scene berdasarkan type dan gender
+func _load_npc_scene(npc_type: String, gender: String) -> bool:
+	var scene_path = _get_scene_path(npc_type, gender)
+
+	if scene_path == _current_scene_path and _npc_scene_instance != null:
+		return true
 	
-	var hair_pos: Vector2 = gender_offsets_hair.get(npc_type, gender_offsets_hair.values()[0])
-	var acc_pos: Vector2  = gender_offsets_acc.get(npc_type, gender_offsets_acc.values()[0])
+	# Hapus scene lama jika ada
+	if _npc_scene_instance != null:
+		_npc_scene_instance.queue_free()
+		_npc_scene_instance = null
+		_body_sprite = null
+		_outfit_sprite = null
+		_hair_sprite = null
+		_accessory_sprite = null
 	
-	# Update posisi hair sprite
-	hair_sprite.position = hair_pos
+	# Cek apakah scene ada
+	if not ResourceLoader.exists(scene_path):
+		push_warning("Scene not found: %s" % scene_path)
+		if placeholder_label:
+			placeholder_label.visible = true
+			placeholder_label.text = "[ Scene Not Found ]"
+		_current_scene_path = ""
+		return false
 	
-	# Update posisi accessory sprite
-	accessory_sprite.position = acc_pos
+	# Load dan instantiate scene
+	var scene = load(scene_path) as PackedScene
+	if scene == null:
+		push_error("Failed to load scene: %s" % scene_path)
+		_current_scene_path = ""
+		return false
+	
+	_npc_scene_instance = scene.instantiate()
+	add_child(_npc_scene_instance)
+	
+	# Posisikan scene di tengah
+	if _npc_scene_instance is Node2D:
+		_npc_scene_instance.position = Vector2(size.x / 2, size.y / 2)
+	
+	# Ambil references ke sprite nodes
+	_setup_sprite_references()
+	
+	_current_scene_path = scene_path
+	
+	if placeholder_label:
+		placeholder_label.visible = false
+	
+	return true
+
+## Setup references ke sprite nodes dalam instanced scene
+func _setup_sprite_references() -> void:
+	if _npc_scene_instance == null:
+		return
+	
+	# Cari CanvasGroup yang berisi sprites
+	var canvas_group = _npc_scene_instance.get_node_or_null("CanvasGroup")
+	if canvas_group == null:
+		# Coba cari langsung di root jika null
+		canvas_group = _npc_scene_instance
+	
+	_body_sprite = canvas_group.get_node_or_null("CharacterBody") as Sprite2D
+	_outfit_sprite = canvas_group.get_node_or_null("CharacterOutfit") as Sprite2D
+	_hair_sprite = canvas_group.get_node_or_null("CharacterHair") as Sprite2D
+	_accessory_sprite = canvas_group.get_node_or_null("CharacterAcc") as Sprite2D
 
 ## Load and display character preview based on configuration
 func load_preview(npc_type: String, gender: String, hair_type: String, hair_color: String, 
 				  accessory: String, acc_color: String, outfit_color: String, body_color: String) -> void:
+	# Load scene yang sesuai
+	if not _load_npc_scene(npc_type, gender):
+		return
+	
 	var gender_folder = GENDER_FOLDER_MAP.get(gender, "Male")
 	var gender_prefix = GENDER_PREFIX_MAP.get(gender, "npcyoungmale")
 	
@@ -116,47 +157,49 @@ func load_preview(npc_type: String, gender: String, hair_type: String, hair_colo
 	
 	# Load acc
 	_load_accessory(gender_folder, gender_prefix, accessory, acc_color)
-	
-	# Update posisi sprite sesuai gender dan npc_type
-	update_sprite_positions(gender, npc_type)
 
 func _load_body(gender_folder: String, gender_prefix: String, body_color: String) -> void:
+	if _body_sprite == null:
+		return
+	
 	var body_path = "res://NPC/Body/Young/%s/character_large_%s_body.png" % [gender_folder, gender_prefix]
 	var body_texture = load(body_path) as Texture2D
 	
 	if body_texture:
-		body_sprite.texture = body_texture
-		if placeholder_label:
-			placeholder_label.visible = false
+		_body_sprite.texture = body_texture
 		
 		# Apply body color palette
 		if _data_manager and not body_color.is_empty():
 			var palette = _data_manager.get_color_palette(body_color)
 			if palette.size() >= 4:
-				ShaderHandler.apply_palette_to_node(body_sprite, palette, DEFAULT_BODY_BASE_PALETTE)
+				ShaderHandler.apply_palette_to_sprite2d(_body_sprite, palette, DEFAULT_BODY_BASE_PALETTE)
 	else:
-		if placeholder_label:
-			placeholder_label.visible = true
-		body_sprite.texture = null
+		_body_sprite.texture = null
 
 func _load_outfit(npc_type: String, gender_folder: String, gender_prefix: String, outfit_color: String) -> void:
+	if _outfit_sprite == null:
+		return
+	
 	var outfit_type = npc_type.to_lower().replace("npc_", "")
 	var outfit_path = "res://NPC/Outfits/Young/%s/character_large_%s_outfit_%s.png" % [gender_folder, gender_prefix, outfit_type]
 	
 	var outfit_texture = load(outfit_path) as Texture2D
 	if outfit_texture:
-		outfit_sprite.texture = outfit_texture
+		_outfit_sprite.texture = outfit_texture
 		
 		if _data_manager and not outfit_color.is_empty():
 			var palette = _data_manager.get_color_palette(outfit_color)
 			if palette.size() >= 4:
-				ShaderHandler.apply_hair_palette_to_node(outfit_sprite, palette)
+				ShaderHandler.apply_hair_palette_to_sprite2d(_outfit_sprite, palette)
 	else:
-		outfit_sprite.texture = null
+		_outfit_sprite.texture = null
 
 func _load_hair(gender_folder: String, gender_prefix: String, hair_type: String, hair_color: String) -> void:
+	if _hair_sprite == null:
+		return
+	
 	if hair_type.is_empty():
-		hair_sprite.texture = null
+		_hair_sprite.texture = null
 		return
 	
 	var hair_type_lower = _convert_name_to_filename(hair_type)
@@ -164,18 +207,21 @@ func _load_hair(gender_folder: String, gender_prefix: String, hair_type: String,
 	
 	var hair_texture = load(hair_path) as Texture2D
 	if hair_texture:
-		hair_sprite.texture = hair_texture
+		_hair_sprite.texture = hair_texture
 		
 		if _data_manager and not hair_color.is_empty():
 			var palette = _data_manager.get_color_palette(hair_color)
 			if palette.size() >= 4:
-				ShaderHandler.apply_hair_palette_to_node(hair_sprite, palette)
+				ShaderHandler.apply_hair_palette_to_sprite2d(_hair_sprite, palette)
 	else:
-		hair_sprite.texture = null
+		_hair_sprite.texture = null
 
 func _load_accessory(gender_folder: String, gender_prefix: String, accessory: String, acc_color: String) -> void:
+	if _accessory_sprite == null:
+		return
+	
 	if accessory.is_empty() or accessory.to_lower() == "none":
-		accessory_sprite.texture = null
+		_accessory_sprite.texture = null
 		return
 	
 	var accessory_lower = _convert_name_to_filename(accessory)
@@ -183,26 +229,30 @@ func _load_accessory(gender_folder: String, gender_prefix: String, accessory: St
 	
 	var accessory_texture = load(accessory_path) as Texture2D
 	if accessory_texture:
-		accessory_sprite.texture = accessory_texture
+		_accessory_sprite.texture = accessory_texture
 		
 		if _data_manager and not acc_color.is_empty():
 			var palette = _data_manager.get_color_palette(acc_color)
 			if palette.size() >= 4:
-				ShaderHandler.apply_hair_palette_to_node(accessory_sprite, palette)
+				ShaderHandler.apply_hair_palette_to_sprite2d(_accessory_sprite, palette)
 	else:
-		accessory_sprite.texture = null
+		_accessory_sprite.texture = null
 
-## konvert dispaly name ke filename
-func _convert_name_to_filename(name: String) -> String:
-	if FILENAME_MAP.has(name):
-		return FILENAME_MAP[name]
-	return name.to_lower().replace(" ", "")
+## konvert display name ke filename
+func _convert_name_to_filename(display_name: String) -> String:
+	if FILENAME_MAP.has(display_name):
+		return FILENAME_MAP[display_name]
+	return display_name.to_lower().replace(" ", "")
 
 ## Clear
 func clear_preview() -> void:
-	body_sprite.texture = null
-	outfit_sprite.texture = null
-	hair_sprite.texture = null
-	accessory_sprite.texture = null
+	if _npc_scene_instance != null:
+		_npc_scene_instance.queue_free()
+		_npc_scene_instance = null
+		_body_sprite = null
+		_outfit_sprite = null
+		_hair_sprite = null
+		_accessory_sprite = null
+	_current_scene_path = ""
 	if placeholder_label:
 		placeholder_label.visible = true

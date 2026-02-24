@@ -1,10 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bbwnrxl1s3qdl"]
+[gd_scene load_steps=3 format=3 uid="uid://bbwnrxl1s3qdl"]
 
 [ext_resource type="Script" uid="uid://cfn5eoi3c32oj" path="res://UI/main.gd" id="1_crsyg"]
-[ext_resource type="Texture2D" uid="uid://bl7uun6gtrbiw" path="res://NPC/Body/Young/Male/character_large_npcyoungmale_body.png" id="2_r7jo0"]
 [ext_resource type="Script" uid="uid://cbrs0aopsggu5" path="res://UI/character_preview.gd" id="2_vgl0i"]
-[ext_resource type="Texture2D" uid="uid://bjlrmpagfulso" path="res://NPC/Hairs/Young/Male/character_large_npcyoungmale_hair_bowlcut.png" id="3_vgl0i"]
-[ext_resource type="Texture2D" uid="uid://bcuh6gbv8lnci" path="res://NPC/Accessories/Young/Male/character_large_npcyoungmale_accessory_glassesaviatorblack.png" id="4_wxu0l"]
 
 [node name="CanvasLayer" type="CanvasLayer"]
 
@@ -67,63 +64,6 @@ custom_minimum_size = Vector2(350, 596)
 layout_mode = 2
 script = ExtResource("2_vgl0i")
 
-[node name="BodySprite" type="TextureRect" parent="Main/MarginContainer/MainLayout/LeftPanel/PreviewFrame/PreviewArea/CharacterLayers"]
-texture_filter = 1
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_r7jo0")
-expand_mode = 1
-stretch_mode = 5
-metadata/_edit_lock_ = true
-
-[node name="OutfitSprite" type="TextureRect" parent="Main/MarginContainer/MainLayout/LeftPanel/PreviewFrame/PreviewArea/CharacterLayers"]
-texture_filter = 1
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 1
-stretch_mode = 5
-metadata/_edit_lock_ = true
-
-[node name="HairSprite" type="TextureRect" parent="Main/MarginContainer/MainLayout/LeftPanel/PreviewFrame/PreviewArea/CharacterLayers"]
-texture_filter = 1
-custom_minimum_size = Vector2(120, 140)
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -59.0
-offset_top = 40.0
-offset_right = 61.0
-offset_bottom = 160.0
-grow_horizontal = 2
-texture = ExtResource("3_vgl0i")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="AccessorySprite" type="TextureRect" parent="Main/MarginContainer/MainLayout/LeftPanel/PreviewFrame/PreviewArea/CharacterLayers"]
-texture_filter = 1
-custom_minimum_size = Vector2(120, 100)
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -48.0
-offset_top = 38.0
-offset_right = 52.0
-offset_bottom = 118.0
-grow_horizontal = 2
-texture = ExtResource("4_wxu0l")
-expand_mode = 1
-stretch_mode = 5
-
 [node name="PlaceholderLabel" type="Label" parent="Main/MarginContainer/MainLayout/LeftPanel/PreviewFrame/PreviewArea"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.4, 0.5, 1)
@@ -132,6 +72,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ColorSwatchRow" type="HBoxContainer" parent="Main/MarginContainer/MainLayout/LeftPanel"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 6
 alignment = 1

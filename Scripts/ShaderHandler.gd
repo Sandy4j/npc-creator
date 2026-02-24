@@ -121,3 +121,11 @@ static func set_body_swap_enabled(node: CanvasItem, enabled: bool) -> void:
 static func set_hair_swap_enabled(node: CanvasItem, enabled: bool) -> void:
 	if node.material is ShaderMaterial:
 		node.material.set_shader_parameter("enable_hair_swap", enabled)
+
+## Alias functions untuk Sprite2D
+static func apply_palette_to_sprite2d(sprite: Sprite2D, target_palette: Array, base_palette: Array = []) -> void:
+	apply_palette_to_node(sprite, target_palette, base_palette)
+
+static func apply_hair_palette_to_sprite2d(sprite: Sprite2D, target_palette: Array) -> void:
+	apply_hair_palette_to_node(sprite, target_palette)
+

@@ -112,8 +112,6 @@ func _update_gender_options() -> void:
 
 ## Update ui berdasarkan property yang dipilih 
 func _update_property_options() -> void:
-	character_preview.update_sprite_positions(_current_gender, _current_npc_type)
-	
 	_populate_option_button(
 		option_hair_type,
 		NPCDataManager.extract_names(_data_manager.get_hair_types(_current_npc_type, _current_gender))

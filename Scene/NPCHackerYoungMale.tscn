@@ -1,13 +1,84 @@
-[gd_scene format=3 uid="uid://ejxsdoms44q0"]
+[gd_scene load_steps=11 format=3 uid="uid://ejxsdoms44q0"]
+
+[ext_resource type="Texture2D" uid="uid://bl7uun6gtrbiw" path="res://NPC/Body/Young/Male/character_large_npcyoungmale_body.png" id="1_u7iej"]
+[ext_resource type="Texture2D" uid="uid://ybygs1lnh7sf" path="res://NPC/Outfits/Young/Male/character_large_npcyoungmale_outfit_hacker.png" id="2_15382"]
+[ext_resource type="Texture2D" uid="uid://o6l7ihf7daou" path="res://NPC/Hairs/Young/Male/character_large_npcyoungmale_hair_wavyshort.png" id="3_seurq"]
+[ext_resource type="Material" uid="uid://blq8orx51g4dw" path="res://Shaders/Template1.tres" id="4_5c8jk"]
+[ext_resource type="Texture2D" uid="uid://ct5nixgyhlu63" path="res://NPC/Accessories/Young/Male/character_large_npcyoungmale_accessory_mask.png" id="4_d436w"]
+[ext_resource type="Shader" uid="uid://bh05rj36wc2q5" path="res://Shaders/palette_swap.gdshader" id="5_shader"]
+[ext_resource type="Material" uid="uid://s3piwpfcae72" path="res://Shaders/Template2.tres" id="7_3byji"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_body"]
+shader = ExtResource("5_shader")
+shader_parameter/color_tolerance = 0.01
+shader_parameter/target_hair_1 = Color(1, 1, 1, 1)
+shader_parameter/target_hair_2 = Color(0.8, 0.8, 0.8, 1)
+shader_parameter/target_hair_3 = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/target_hair_4 = Color(0.4, 0.4, 0.4, 1)
+shader_parameter/target_body_1 = Color(1, 0.89, 0.8, 1)
+shader_parameter/target_body_2 = Color(0.9, 0.73, 0.61, 1)
+shader_parameter/target_body_3 = Color(0.69, 0.5, 0.37, 1)
+shader_parameter/target_body_4 = Color(0.69, 0.5, 0.37, 1)
+shader_parameter/enable_hair_swap = false
+shader_parameter/enable_body_swap = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_outfit"]
+shader = ExtResource("5_shader")
+shader_parameter/color_tolerance = 0.01
+shader_parameter/target_hair_1 = Color(0.38, 0.57, 0.3, 1)
+shader_parameter/target_hair_2 = Color(0.21, 0.42, 0.18, 1)
+shader_parameter/target_hair_3 = Color(0.09, 0.31, 0.1, 1)
+shader_parameter/target_hair_4 = Color(0, 0.18, 0.03, 1)
+shader_parameter/target_body_1 = Color(1, 0.9, 0.8, 1)
+shader_parameter/target_body_2 = Color(0.95, 0.8, 0.7, 1)
+shader_parameter/target_body_3 = Color(0.9, 0.7, 0.6, 1)
+shader_parameter/target_body_4 = Color(0.85, 0.6, 0.5, 1)
+shader_parameter/enable_hair_swap = true
+shader_parameter/enable_body_swap = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_acc"]
+shader = ExtResource("5_shader")
+shader_parameter/color_tolerance = 0.01
+shader_parameter/target_hair_1 = Color(0.59, 0.59, 0.59, 1)
+shader_parameter/target_hair_2 = Color(0.46, 0.46, 0.46, 1)
+shader_parameter/target_hair_3 = Color(0.33, 0.32, 0.31, 1)
+shader_parameter/target_hair_4 = Color(0.23, 0.2, 0.19, 1)
+shader_parameter/target_body_1 = Color(1, 0.9, 0.8, 1)
+shader_parameter/target_body_2 = Color(0.95, 0.8, 0.7, 1)
+shader_parameter/target_body_3 = Color(0.9, 0.7, 0.6, 1)
+shader_parameter/target_body_4 = Color(0.85, 0.6, 0.5, 1)
+shader_parameter/enable_hair_swap = true
+shader_parameter/enable_body_swap = false
 
 [node name="Node2D" type="Node2D"]
 
 [node name="CanvasGroup" type="CanvasGroup" parent="."]
 
 [node name="CharacterBody" type="Sprite2D" parent="CanvasGroup"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_body")
+texture = ExtResource("1_u7iej")
 
 [node name="CharacterOutfit" type="Sprite2D" parent="CanvasGroup"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_outfit")
+texture = ExtResource("2_15382")
 
 [node name="CharacterHair" type="Sprite2D" parent="CanvasGroup"]
+texture_filter = 1
+material = ExtResource("4_5c8jk")
+position = Vector2(3, -186)
+texture = ExtResource("3_seurq")
 
 [node name="CharacterAcc" type="Sprite2D" parent="CanvasGroup"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_acc")
+position = Vector2(0, -179)
+texture = ExtResource("4_d436w")
+offset = Vector2(2.5, 0)
+
+[node name="CharacterHair2" type="Sprite2D" parent="CanvasGroup"]
+texture_filter = 1
+material = ExtResource("7_3byji")
+position = Vector2(3, -186)
+texture = ExtResource("3_seurq")
