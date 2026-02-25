@@ -27,6 +27,18 @@ static func create_main_material() -> ShaderMaterial:
 	material.shader = get_main_shader()
 	material.set_shader_parameter("enabled", true)
 	material.set_shader_parameter("is_fade", false)
+	
+	# Inisialisasi semua replace colors ke transparent 
+	var transparent = Color(0, 0, 0, 0)
+	material.set_shader_parameter("replace_0", transparent)
+	material.set_shader_parameter("replace_1", transparent)
+	material.set_shader_parameter("replace_2", transparent)
+	material.set_shader_parameter("replace_3", transparent)
+	material.set_shader_parameter("replace_4", transparent)
+	material.set_shader_parameter("replace_5", transparent)
+	material.set_shader_parameter("replace_6", transparent)
+	material.set_shader_parameter("replace_7", transparent)
+	
 	return material
 
 ## Membuat ShaderMaterial dengan hair shader (HairShader)
@@ -35,6 +47,18 @@ static func create_hair_material() -> ShaderMaterial:
 	material.shader = get_hair_shader()
 	material.set_shader_parameter("enabled", true)
 	material.set_shader_parameter("is_fade", false)
+	
+	# Inisialisasi semua replace colors ke transparent
+	var transparent = Color(0, 0, 0, 0)
+	material.set_shader_parameter("replace_0", transparent)
+	material.set_shader_parameter("replace_1", transparent)
+	material.set_shader_parameter("replace_2", transparent)
+	material.set_shader_parameter("replace_3", transparent)
+	material.set_shader_parameter("replace_4", transparent)
+	material.set_shader_parameter("replace_5", transparent)
+	material.set_shader_parameter("replace_6", transparent)
+	material.set_shader_parameter("replace_7", transparent)
+	
 	return material
 
 ## Mengkonversi hex color string ke Color
@@ -57,27 +81,122 @@ static func _to_color(value) -> Color:
 		push_warning("ShaderHandler: Invalid color type, returning white")
 		return Color.WHITE
 
-## Mengaplikasikan full palette ke node (body + hair/outfit)
-## Menggunakan shader1.gdshader dengan replace_0-7
-static func apply_full_palette(node: CanvasItem, hair_palette: Array, body_palette: Array) -> void:
-	if hair_palette.size() < 4 or body_palette.size() < 4:
-		push_warning("ShaderHandler: Palettes harus memiliki minimal 4 warna")
+## Helper untuk mendapatkan atau membuat main material
+## Selalu create material baru untuk menghindari nilai default dari scene
+static func _get_or_create_main_material(node: CanvasItem) -> ShaderMaterial:
+	# Always create new material to avoid stale values from scene defaults
+	var material = create_main_material()
+	node.material = material
+	return material
+
+## Mengaplikasikan hair palette ke node
+## Hair menggunakan slot replace_0-3 (magenta-based colors)
+static func apply_hair_palette(node: CanvasItem, hair_palette: Array) -> void:
+	if hair_palette.size() < 4:
+		push_warning("ShaderHandler: Hair palette harus memiliki minimal 4 warna")
 		return
 	
-	var material: ShaderMaterial
-	if node.material is ShaderMaterial:
-		material = node.material
-	else:
-		material = create_main_material()
-		node.material = material
-	
+	var material: ShaderMaterial = _get_or_create_main_material(node)
 	material.set_shader_parameter("enabled", true)
 	
-	# Hair/Outfit colors (replace_0 to replace_3)
+	# Hair colors (replace_0 to replace_3)
 	material.set_shader_parameter("replace_0", _to_color(hair_palette[0]))
 	material.set_shader_parameter("replace_1", _to_color(hair_palette[1]))
 	material.set_shader_parameter("replace_2", _to_color(hair_palette[2]))
 	material.set_shader_parameter("replace_3", _to_color(hair_palette[3]))
+	
+	# Set body slots to transparent
+	var transparent = Color(0, 0, 0, 0)
+	material.set_shader_parameter("replace_4", transparent)
+	material.set_shader_parameter("replace_5", transparent)
+	material.set_shader_parameter("replace_6", transparent)
+	material.set_shader_parameter("replace_7", transparent)
+
+## Mengaplikasikan outfit palette ke node
+## Outfit menggunakan slot replace_0-3 (magenta-based colors)
+static func apply_outfit_palette(node: CanvasItem, outfit_palette: Array) -> void:
+	if outfit_palette.size() < 4:
+		push_warning("ShaderHandler: Outfit palette harus memiliki minimal 4 warna")
+		return
+	
+	var material: ShaderMaterial = _get_or_create_main_material(node)
+	material.set_shader_parameter("enabled", true)
+	
+	# Outfit colors (replace_0 to replace_3)
+	material.set_shader_parameter("replace_0", _to_color(outfit_palette[0]))
+	material.set_shader_parameter("replace_1", _to_color(outfit_palette[1]))
+	material.set_shader_parameter("replace_2", _to_color(outfit_palette[2]))
+	material.set_shader_parameter("replace_3", _to_color(outfit_palette[3]))
+	
+	# Set body slots to transparent
+	var transparent = Color(0, 0, 0, 0)
+	material.set_shader_parameter("replace_4", transparent)
+	material.set_shader_parameter("replace_5", transparent)
+	material.set_shader_parameter("replace_6", transparent)
+	material.set_shader_parameter("replace_7", transparent)
+
+## Mengaplikasikan eye palette ke node
+## Eye menggunakan slot replace_0-3 (magenta-based colors)
+static func apply_eye_palette(node: CanvasItem, eye_palette: Array) -> void:
+	if eye_palette.size() < 4:
+		push_warning("ShaderHandler: Eye palette harus memiliki minimal 4 warna")
+		return
+	
+	var material: ShaderMaterial = _get_or_create_main_material(node)
+	material.set_shader_parameter("enabled", true)
+	
+	# Eye colors (replace_0 to replace_3)
+	material.set_shader_parameter("replace_0", _to_color(eye_palette[0]))
+	material.set_shader_parameter("replace_1", _to_color(eye_palette[1]))
+	material.set_shader_parameter("replace_2", _to_color(eye_palette[2]))
+	material.set_shader_parameter("replace_3", _to_color(eye_palette[3]))
+	
+	# Set body slots to transparent
+	var transparent = Color(0, 0, 0, 0)
+	material.set_shader_parameter("replace_4", transparent)
+	material.set_shader_parameter("replace_5", transparent)
+	material.set_shader_parameter("replace_6", transparent)
+	material.set_shader_parameter("replace_7", transparent)
+
+## Mengaplikasikan accessory palette ke node
+## Accessory menggunakan slot replace_0-3 (magenta-based colors)
+static func apply_accessory_palette(node: CanvasItem, acc_palette: Array) -> void:
+	if acc_palette.size() < 4:
+		push_warning("ShaderHandler: Accessory palette harus memiliki minimal 4 warna")
+		return
+	
+	var material: ShaderMaterial = _get_or_create_main_material(node)
+	material.set_shader_parameter("enabled", true)
+	
+	# Accessory colors (replace_0 to replace_3)
+	material.set_shader_parameter("replace_0", _to_color(acc_palette[0]))
+	material.set_shader_parameter("replace_1", _to_color(acc_palette[1]))
+	material.set_shader_parameter("replace_2", _to_color(acc_palette[2]))
+	material.set_shader_parameter("replace_3", _to_color(acc_palette[3]))
+	
+	# Set body slots to transparent
+	var transparent = Color(0, 0, 0, 0)
+	material.set_shader_parameter("replace_4", transparent)
+	material.set_shader_parameter("replace_5", transparent)
+	material.set_shader_parameter("replace_6", transparent)
+	material.set_shader_parameter("replace_7", transparent)
+
+## Mengaplikasikan body palette ke node (skin tone)
+## Body menggunakan slot replace_4-7 (yellow-based colors)
+static func apply_body_palette(node: CanvasItem, body_palette: Array) -> void:
+	if body_palette.size() < 4:
+		push_warning("ShaderHandler: Body palette harus memiliki minimal 4 warna")
+		return
+	
+	var material: ShaderMaterial = _get_or_create_main_material(node)
+	material.set_shader_parameter("enabled", true)
+	
+	# Set hair/outfit slots to transparent
+	var transparent = Color(0, 0, 0, 0)
+	material.set_shader_parameter("replace_0", transparent)
+	material.set_shader_parameter("replace_1", transparent)
+	material.set_shader_parameter("replace_2", transparent)
+	material.set_shader_parameter("replace_3", transparent)
 	
 	# Body colors (replace_4 to replace_7)
 	material.set_shader_parameter("replace_4", _to_color(body_palette[0]))
@@ -85,66 +204,8 @@ static func apply_full_palette(node: CanvasItem, hair_palette: Array, body_palet
 	material.set_shader_parameter("replace_6", _to_color(body_palette[2]))
 	material.set_shader_parameter("replace_7", _to_color(body_palette[3]))
 
-## Mengaplikasikan hair/outfit palette saja ke node
-## Body colors diset ke warna original supaya tidak berubah
-static func apply_hair_only_palette(node: CanvasItem, hair_palette: Array) -> void:
-	if hair_palette.size() < 4:
-		push_warning("ShaderHandler: Hair palette harus memiliki minimal 4 warna")
-		return
-	
-	var material: ShaderMaterial
-	if node.material is ShaderMaterial:
-		material = node.material
-	else:
-		material = create_main_material()
-		node.material = material
-	
-	material.set_shader_parameter("enabled", true)
-	
-	# Hair/Outfit colors
-	material.set_shader_parameter("replace_0", _to_color(hair_palette[0]))
-	material.set_shader_parameter("replace_1", _to_color(hair_palette[1]))
-	material.set_shader_parameter("replace_2", _to_color(hair_palette[2]))
-	material.set_shader_parameter("replace_3", _to_color(hair_palette[3]))
-	
-	# Body colors diset ke original supaya tidak berubah (bukan transparan)
-	# Original body colors dari shader: yellow tones
-	material.set_shader_parameter("replace_4", Color(0.996, 0.996, 0, 1))
-	material.set_shader_parameter("replace_5", Color(0.502, 0.502, 0, 1))
-	material.set_shader_parameter("replace_6", Color(0.251, 0.251, 0, 1))
-	material.set_shader_parameter("replace_7", Color(0.125, 0.125, 0, 1))
-
-## Mengaplikasikan body palette saja ke node
-## Hair colors diset ke warna original supaya tidak berubah
-static func apply_body_only_palette(node: CanvasItem, body_palette: Array) -> void:
-	if body_palette.size() < 4:
-		push_warning("ShaderHandler: Body palette harus memiliki minimal 4 warna")
-		return
-	
-	var material: ShaderMaterial
-	if node.material is ShaderMaterial:
-		material = node.material
-	else:
-		material = create_main_material()
-		node.material = material
-	
-	material.set_shader_parameter("enabled", true)
-	
-	# Hair colors diset ke original supaya tidak berubah (bukan transparan)
-	# Original hair colors dari shader: magenta tones
-	material.set_shader_parameter("replace_0", Color(0.996, 0, 0.996, 1))
-	material.set_shader_parameter("replace_1", Color(0.502, 0, 0.502, 1))
-	material.set_shader_parameter("replace_2", Color(0.251, 0, 0.251, 1))
-	material.set_shader_parameter("replace_3", Color(0.125, 0, 0.125, 1))
-	
-	# Body colors
-	material.set_shader_parameter("replace_4", _to_color(body_palette[0]))
-	material.set_shader_parameter("replace_5", _to_color(body_palette[1]))
-	material.set_shader_parameter("replace_6", _to_color(body_palette[2]))
-	material.set_shader_parameter("replace_7", _to_color(body_palette[3]))
 
 ## Mengaplikasikan hair shader ke node (untuk CharacterHair2)
-## Shader ini hanya swap hair colors, body colors jadi transparan
 static func apply_hair2_palette(node: CanvasItem, hair_palette: Array) -> void:
 	if hair_palette.size() < 4:
 		push_warning("ShaderHandler: Hair palette harus memiliki minimal 4 warna")
@@ -179,5 +240,3 @@ static func set_enabled(node: CanvasItem, enabled: bool) -> void:
 ## Reset shader material dari node
 static func clear_shader_from_node(node: CanvasItem) -> void:
 	node.material = null
-
-
