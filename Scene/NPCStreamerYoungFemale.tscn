@@ -1,13 +1,29 @@
-[gd_scene load_steps=11 format=3 uid="uid://dm7sorho3lf3i"]
+[gd_scene load_steps=13 format=3 uid="uid://dm7sorho3lf3i"]
 
-[ext_resource type="Shader" uid="uid://n35u8pwe071u" path="res://Shaders/shader1.gdshader" id="1_seurq"]
 [ext_resource type="Texture2D" uid="uid://cgdq1n8tvc06j" path="res://NPC/Body/Young/Female/character_large_npcyoungfemale_body.png" id="1_body"]
+[ext_resource type="Shader" uid="uid://n35u8pwe071u" path="res://Shaders/shader1.gdshader" id="1_seurq"]
 [ext_resource type="Texture2D" uid="uid://ow8ne22bs5pc" path="res://NPC/Outfits/Young/Female/character_large_npcyoungfemale_outfit_streamer.png" id="2_outfit"]
+[ext_resource type="Texture2D" uid="uid://0l0hv1vlpgtj" path="res://NPC/Body/Young/Female/Face/character_large_npcyoungfemale_neutral_face_0000.png" id="3_3qb03"]
 [ext_resource type="Texture2D" uid="uid://dk2ye3upn0dts" path="res://NPC/Hairs/Young/Female/character_large_npcyoungfemale_hair_longbang.png" id="3_hair"]
 [ext_resource type="Texture2D" uid="uid://bg20xn2p3ln2b" path="res://NPC/Accessories/Young/Female/character_large_npcyoungfemale_accessory_earringtop.png" id="4_acc"]
 [ext_resource type="Material" uid="uid://s3piwpfcae72" path="res://Shaders/HairTemplate.tres" id="6_seurq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d436w"]
+shader = ExtResource("1_seurq")
+shader_parameter/is_fade = false
+shader_parameter/enabled = true
+shader_parameter/invisible = Vector4(0, 0, 0, 0)
+shader_parameter/fade_color = Vector4(0, 0, 0, 1)
+shader_parameter/replace_0 = Color(0, 0.53333336, 0, 1)
+shader_parameter/replace_1 = Color(0, 1, 0, 1)
+shader_parameter/replace_2 = Color(0, 0.34117648, 0, 1)
+shader_parameter/replace_3 = Color(0, 0, 0.27058825, 1)
+shader_parameter/replace_4 = Color(0.627451, 0.827451, 1, 1)
+shader_parameter/replace_5 = Color(0.9647059, 0.6509804, 0, 1)
+shader_parameter/replace_6 = Color(0, 0.77254903, 0, 1)
+shader_parameter/replace_7 = Color(1, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3qb03"]
 shader = ExtResource("1_seurq")
 shader_parameter/is_fade = false
 shader_parameter/enabled = true
@@ -75,6 +91,12 @@ shader_parameter/replace_7 = Color(1, 0, 0, 1)
 texture_filter = 1
 material = SubResource("ShaderMaterial_d436w")
 texture = ExtResource("1_body")
+
+[node name="CharacterFace" type="Sprite2D" parent="CanvasGroup"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_3qb03")
+position = Vector2(0, -148)
+texture = ExtResource("3_3qb03")
 
 [node name="CharacterOutfit" type="Sprite2D" parent="CanvasGroup"]
 texture_filter = 1

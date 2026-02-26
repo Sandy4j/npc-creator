@@ -219,6 +219,7 @@ func _load_character_preview() -> void:
 	var acc_color = ""
 	var outfit_color = ""
 	var body_color = ""
+	var eye_color = ""
 	
 	if option_hair_type.item_count > 0:
 		hair_type = option_hair_type.get_item_text(option_hair_type.selected)
@@ -232,6 +233,8 @@ func _load_character_preview() -> void:
 		outfit_color = option_outfit_color.get_item_text(option_outfit_color.selected)
 	if option_body_color.item_count > 0:
 		body_color = option_body_color.get_item_text(option_body_color.selected)
+	if option_eye_color.item_count > 0:
+		eye_color = option_eye_color.get_item_text(option_eye_color.selected)
 	
 	# Display sesuai dengan konfigurasi yang dipilih
 	character_preview.load_preview(
@@ -242,7 +245,8 @@ func _load_character_preview() -> void:
 		accessory,
 		acc_color,
 		outfit_color,
-		body_color
+		body_color,
+		eye_color
 	)
 
 func _on_npc_type_selected(index: int) -> void:

@@ -8,6 +8,7 @@ var _current_scene_path: String = ""
 
 # References ke sprite nodes dalam scene yang di-load
 var _body_sprite: Sprite2D = null
+var _face_sprite: Sprite2D = null
 var _outfit_sprite: Sprite2D = null
 var _hair_sprite: Sprite2D = null
 var _hair2_sprite: Sprite2D = null
@@ -58,8 +59,34 @@ const FILENAME_MAP = {
 
 var _data_manager: NPCDataManager
 
+var zoom_min: float = 0.5
+var zoom_max: float = 10.0
+var zoom_step: float = 0.1
+var zoom_current: float = 1.0
+var _position_offset: Vector2 = Vector2.ZERO
+
+var _is_panning: bool = false
+var _pan_start_mouse_pos: Vector2
+
 func _ready() -> void:
 	placeholder_label = get_parent().get_node_or_null("PlaceholderLabel")
+	mouse_filter = Control.MOUSE_FILTER_STOP
+	
+	# Pastikan konten tidak keluar dari area preview
+	var parent = get_parent()
+	if parent is Control:
+		parent.clip_contents = true
+	
+	var info_label = Label.new()
+	info_label.text = "Scroll: Zoom | Left Click: Pan | Middle Click: Reset"
+	info_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	info_label.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
+	info_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE, Control.PRESET_MODE_MINSIZE, 10)
+	info_label.add_theme_color_override("font_outline_color", Color.BLACK)
+	info_label.add_theme_constant_override("outline_size", 4)
+	info_label.modulate.a = 0.6
+	info_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(info_label)
 
 func set_data_manager(manager: NPCDataManager) -> void:
 	_data_manager = manager
@@ -83,6 +110,7 @@ func _load_npc_scene(npc_type: String, gender: String) -> bool:
 		_npc_scene_instance.queue_free()
 		_npc_scene_instance = null
 		_body_sprite = null
+		_face_sprite = null
 		_outfit_sprite = null
 		_hair_sprite = null
 		_hair2_sprite = null
@@ -109,7 +137,8 @@ func _load_npc_scene(npc_type: String, gender: String) -> bool:
 	
 	# Posisikan scene di tengah
 	if _npc_scene_instance is Node2D:
-		_npc_scene_instance.position = Vector2(size.x / 2, size.y / 2)
+		_npc_scene_instance.position = Vector2(size.x / 2, size.y / 2) + _position_offset
+		_npc_scene_instance.scale = Vector2(zoom_current, zoom_current)
 	
 	# Ambil references ke sprite nodes
 	_setup_sprite_references()
@@ -133,6 +162,7 @@ func _setup_sprite_references() -> void:
 		canvas_group = _npc_scene_instance
 	
 	_body_sprite = canvas_group.get_node_or_null("CharacterBody") as Sprite2D
+	_face_sprite = canvas_group.get_node_or_null("CharacterFace") as Sprite2D
 	_outfit_sprite = canvas_group.get_node_or_null("CharacterOutfit") as Sprite2D
 	_hair_sprite = canvas_group.get_node_or_null("CharacterHair") as Sprite2D
 	_hair2_sprite = canvas_group.get_node_or_null("CharacterHair2") as Sprite2D
@@ -140,7 +170,7 @@ func _setup_sprite_references() -> void:
 
 ## Load and display character preview based on configuration
 func load_preview(npc_type: String, gender: String, hair_type: String, hair_color: String, 
-		accessory: String, acc_color: String, outfit_color: String, body_color: String) -> void:
+		accessory: String, acc_color: String, outfit_color: String, body_color: String, eye_color: String) -> void:
 	# Load scene yang sesuai
 	if not _load_npc_scene(npc_type, gender):
 		return
@@ -151,14 +181,17 @@ func load_preview(npc_type: String, gender: String, hair_type: String, hair_colo
 	# Load body
 	_load_body(gender_folder, gender_prefix, body_color)
 	
+	# Load face
+	_load_face(gender_folder, gender_prefix, eye_color, body_color)
+	
 	# Load outfit
-	_load_outfit(npc_type, gender_folder, gender_prefix, outfit_color)
+	_load_outfit(npc_type, gender_folder, gender_prefix, outfit_color, body_color)
 	
 	# Load rambut
-	_load_hair(gender_folder, gender_prefix, hair_type, hair_color)
+	_load_hair(gender_folder, gender_prefix, hair_type, hair_color, body_color)
 	
 	# Load acc
-	_load_accessory(gender_folder, gender_prefix, accessory, acc_color)
+	_load_accessory(gender_folder, gender_prefix, accessory, acc_color, body_color)
 
 func _load_body(gender_folder: String, gender_prefix: String, body_color: String) -> void:
 	if _body_sprite == null:
@@ -174,11 +207,27 @@ func _load_body(gender_folder: String, gender_prefix: String, body_color: String
 		if _data_manager and not body_color.is_empty():
 			var palette = _data_manager.get_color_palette(body_color)
 			if palette.size() >= 4:
-				ShaderHandler.apply_body_only_palette(_body_sprite, palette)
+				ShaderHandler.apply_body_palette(_body_sprite, palette)
 	else:
 		_body_sprite.texture = null
 
-func _load_outfit(npc_type: String, gender_folder: String, gender_prefix: String, outfit_color: String) -> void:
+func _load_face(gender_folder: String, gender_prefix: String, eye_color: String, body_color: String) -> void:
+	if _face_sprite == null:
+		return
+	
+	var face_path = "res://NPC/Body/Young/%s/face/character_large_%s_neutral_face_0000.png" % [gender_folder, gender_prefix]
+	var face_texture = load(face_path) as Texture2D
+	
+	if face_texture:
+		_face_sprite.texture = face_texture
+
+		if _data_manager and not eye_color.is_empty() and not body_color.is_empty():
+			var eye_palette = _data_manager.get_color_palette(eye_color)
+			var body_palette = _data_manager.get_color_palette(body_color)
+			if eye_palette.size() >= 4 and body_palette.size() >= 4:
+				ShaderHandler.apply_eye_palette(_face_sprite, eye_palette, body_palette)
+
+func _load_outfit(npc_type: String, gender_folder: String, gender_prefix: String, outfit_color: String, body_color: String) -> void:
 	if _outfit_sprite == null:
 		return
 	
@@ -189,15 +238,16 @@ func _load_outfit(npc_type: String, gender_folder: String, gender_prefix: String
 	if outfit_texture:
 		_outfit_sprite.texture = outfit_texture
 		
-		# Apply outfit color palette (uses hair channel - replace_0 to replace_3)
+		# Apply outfit color palette
 		if _data_manager and not outfit_color.is_empty():
 			var palette = _data_manager.get_color_palette(outfit_color)
+			var body_palette = _data_manager.get_color_palette(body_color)
 			if palette.size() >= 4:
-				ShaderHandler.apply_hair_only_palette(_outfit_sprite, palette)
+				ShaderHandler.apply_outfit_palette(_outfit_sprite, palette, body_palette)
 	else:
 		_outfit_sprite.texture = null
 
-func _load_hair(gender_folder: String, gender_prefix: String, hair_type: String, hair_color: String) -> void:
+func _load_hair(gender_folder: String, gender_prefix: String, hair_type: String, hair_color: String, body_color: String) -> void:
 	if hair_type.is_empty():
 		if _hair_sprite:
 			_hair_sprite.texture = null
@@ -210,20 +260,21 @@ func _load_hair(gender_folder: String, gender_prefix: String, hair_type: String,
 	
 	var hair_texture = load(hair_path) as Texture2D
 	
-	# Load CharacterHair (menggunakan shader1 - full palette)
+	# Load CharacterHair 
 	if _hair_sprite:
 		if hair_texture:
 			_hair_sprite.texture = hair_texture
 			
-			# Apply hair color palette (uses hair channel - replace_0 to replace_3)
+			# Apply hair color palette
 			if _data_manager and not hair_color.is_empty():
 				var palette = _data_manager.get_color_palette(hair_color)
+				var body_pallete = _data_manager.get_color_palette(body_color)
 				if palette.size() >= 4:
-					ShaderHandler.apply_hair_only_palette(_hair_sprite, palette)
+					ShaderHandler.apply_hair_palette(_hair_sprite, palette, body_pallete)
 		else:
 			_hair_sprite.texture = null
 	
-	# Load CharacterHair2 (menggunakan HairShader - body colors jadi transparan)
+	# Load CharacterHair2
 	if _hair2_sprite:
 		if hair_texture:
 			_hair2_sprite.texture = hair_texture
@@ -236,7 +287,7 @@ func _load_hair(gender_folder: String, gender_prefix: String, hair_type: String,
 		else:
 			_hair2_sprite.texture = null
 
-func _load_accessory(gender_folder: String, gender_prefix: String, accessory: String, acc_color: String) -> void:
+func _load_accessory(gender_folder: String, gender_prefix: String, accessory: String, acc_color: String, body_color: String) -> void:
 	if _accessory_sprite == null:
 		return
 	
@@ -251,11 +302,12 @@ func _load_accessory(gender_folder: String, gender_prefix: String, accessory: St
 	if accessory_texture:
 		_accessory_sprite.texture = accessory_texture
 		
-		# Apply accessory color palette (uses hair channel - replace_0 to replace_3)
+		# Apply accessory color palette
 		if _data_manager and not acc_color.is_empty():
 			var palette = _data_manager.get_color_palette(acc_color)
+			var body_pallete = _data_manager.get_color_palette(body_color)
 			if palette.size() >= 4:
-				ShaderHandler.apply_hair_only_palette(_accessory_sprite, palette)
+				ShaderHandler.apply_accessory_palette(_accessory_sprite, palette, body_pallete)
 	else:
 		_accessory_sprite.texture = null
 
@@ -271,6 +323,7 @@ func clear_preview() -> void:
 		_npc_scene_instance.queue_free()
 		_npc_scene_instance = null
 		_body_sprite = null
+		_face_sprite = null
 		_outfit_sprite = null
 		_hair_sprite = null
 		_hair2_sprite = null
@@ -278,3 +331,36 @@ func clear_preview() -> void:
 	_current_scene_path = ""
 	if placeholder_label:
 		placeholder_label.visible = true
+	
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
+			_set_zoom(zoom_current + zoom_step)
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
+			_set_zoom(zoom_current - zoom_step)
+		elif event.button_index == MOUSE_BUTTON_MIDDLE and event.pressed:
+			_reset_preview_transform()
+		elif event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				_is_panning = true
+				_pan_start_mouse_pos = event.position
+			else:
+				_is_panning = false
+	
+	if event is InputEventMouseMotion and _is_panning:
+		if _npc_scene_instance and _npc_scene_instance is Node2D:
+			var delta = event.position - _pan_start_mouse_pos
+			_npc_scene_instance.position += delta
+			_position_offset += delta
+			_pan_start_mouse_pos = event.position
+
+func _set_zoom(value: float) -> void:
+	zoom_current = clamp(value, zoom_min, zoom_max)
+	if _npc_scene_instance and _npc_scene_instance is Node2D:
+		_npc_scene_instance.scale = Vector2(zoom_current, zoom_current)
+
+func _reset_preview_transform() -> void:
+	_set_zoom(1.0)
+	_position_offset = Vector2.ZERO
+	if _npc_scene_instance and _npc_scene_instance is Node2D:
+		_npc_scene_instance.position = Vector2(size.x / 2, size.y / 2)
