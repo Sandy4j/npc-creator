@@ -58,6 +58,7 @@ const FILENAME_MAP = {
 }
 
 var _data_manager: NPCDataManager
+var _mod_loader: ModLoader
 
 var zoom_min: float = 0.5
 var zoom_max: float = 10.0
@@ -90,6 +91,9 @@ func _ready() -> void:
 
 func set_data_manager(manager: NPCDataManager) -> void:
 	_data_manager = manager
+
+func set_mod_loader(loader: ModLoader) -> void:
+	_mod_loader = loader
 
 ## Generate scene path berdasarkan npc_type dan gender
 func _get_scene_path(npc_type: String, gender: String) -> String:
@@ -185,13 +189,13 @@ func load_preview(npc_type: String, gender: String, hair_type: String, hair_colo
 	_load_face(gender_folder, gender_prefix, eye_color, body_color)
 	
 	# Load outfit
-	_load_outfit(npc_type, gender_folder, gender_prefix, outfit_color, body_color)
+	_load_outfit(npc_type, gender_folder, gender_prefix, outfit_color, body_color, gender)
 	
 	# Load rambut
-	_load_hair(gender_folder, gender_prefix, hair_type, hair_color, body_color)
+	_load_hair(gender_folder, gender_prefix, hair_type, hair_color, body_color, gender)
 	
 	# Load acc
-	_load_accessory(gender_folder, gender_prefix, accessory, acc_color, body_color)
+	_load_accessory(gender_folder, gender_prefix, accessory, acc_color, body_color, gender)
 
 func _load_body(gender_folder: String, gender_prefix: String, body_color: String) -> void:
 	if _body_sprite == null:
@@ -227,14 +231,23 @@ func _load_face(gender_folder: String, gender_prefix: String, eye_color: String,
 			if eye_palette.size() >= 4 and body_palette.size() >= 4:
 				ShaderHandler.apply_eye_palette(_face_sprite, eye_palette, body_palette)
 
-func _load_outfit(npc_type: String, gender_folder: String, gender_prefix: String, outfit_color: String, body_color: String) -> void:
+func _load_outfit(npc_type: String, gender_folder: String, gender_prefix: String, outfit_color: String, body_color: String, gender: String = "") -> void:
 	if _outfit_sprite == null:
 		return
 	
 	var outfit_type = npc_type.to_lower().replace("npc_", "")
-	var outfit_path = "res://NPC/Outfits/Young/%s/character_large_%s_outfit_%s.png" % [gender_folder, gender_prefix, outfit_type]
+	var outfit_texture: Texture2D = null
 	
-	var outfit_texture = load(outfit_path) as Texture2D
+	# Prioritaskan mod outfit jika tersedia
+	if _mod_loader and _mod_loader.has_mod_outfit(npc_type, gender):
+		var mod_path = _mod_loader.get_mod_outfit_path(npc_type, gender)
+		outfit_texture = ModLoader.load_texture_from_path(mod_path)
+	
+	# Fallback ke built-in asset jika tidak ada mod
+	if outfit_texture == null:
+		var outfit_path = "res://NPC/Outfits/Young/%s/character_large_%s_outfit_%s.png" % [gender_folder, gender_prefix, outfit_type]
+		outfit_texture = load(outfit_path) as Texture2D
+	
 	if outfit_texture:
 		_outfit_sprite.texture = outfit_texture
 		
@@ -247,7 +260,7 @@ func _load_outfit(npc_type: String, gender_folder: String, gender_prefix: String
 	else:
 		_outfit_sprite.texture = null
 
-func _load_hair(gender_folder: String, gender_prefix: String, hair_type: String, hair_color: String, body_color: String) -> void:
+func _load_hair(gender_folder: String, gender_prefix: String, hair_type: String, hair_color: String, body_color: String, gender: String) -> void:
 	if hair_type.is_empty():
 		if _hair_sprite:
 			_hair_sprite.texture = null
@@ -255,10 +268,17 @@ func _load_hair(gender_folder: String, gender_prefix: String, hair_type: String,
 			_hair2_sprite.texture = null
 		return
 	
-	var hair_type_lower = _convert_name_to_filename(hair_type)
-	var hair_path = "res://NPC/Hairs/Young/%s/character_large_%s_hair_%s.png" % [gender_folder, gender_prefix, hair_type_lower]
+	var hair_texture: Texture2D = null
 	
-	var hair_texture = load(hair_path) as Texture2D
+	# Cek apakah ini adalah asset mod terlebih dahulu
+	if ModLoader.is_mod_asset(hair_type) and _mod_loader:
+		var mod_path = _mod_loader.get_mod_asset_path("hair", gender, hair_type)
+		hair_texture = ModLoader.load_texture_from_path(mod_path)
+	else:
+		# jika bukan asset mod, cari di res://
+		var hair_type_lower = _convert_name_to_filename(hair_type)
+		var hair_path = "res://NPC/Hairs/Young/%s/character_large_%s_hair_%s.png" % [gender_folder, gender_prefix, hair_type_lower]
+		hair_texture = load(hair_path) as Texture2D
 	
 	# Load CharacterHair 
 	if _hair_sprite:
@@ -287,7 +307,7 @@ func _load_hair(gender_folder: String, gender_prefix: String, hair_type: String,
 		else:
 			_hair2_sprite.texture = null
 
-func _load_accessory(gender_folder: String, gender_prefix: String, accessory: String, acc_color: String, body_color: String) -> void:
+func _load_accessory(gender_folder: String, gender_prefix: String, accessory: String, acc_color: String, body_color: String, gender: String) -> void:
 	if _accessory_sprite == null:
 		return
 	
@@ -295,10 +315,18 @@ func _load_accessory(gender_folder: String, gender_prefix: String, accessory: St
 		_accessory_sprite.texture = null
 		return
 	
-	var accessory_lower = _convert_name_to_filename(accessory)
-	var accessory_path = "res://NPC/Accessories/Young/%s/character_large_%s_accessory_%s.png" % [gender_folder, gender_prefix, accessory_lower]
+	var accessory_texture: Texture2D = null
 	
-	var accessory_texture = load(accessory_path) as Texture2D
+	# Cek apakah ini adalah asset mod terlebih dahulu
+	if ModLoader.is_mod_asset(accessory) and _mod_loader:
+		var mod_path = _mod_loader.get_mod_asset_path("accessory", gender, accessory)
+		accessory_texture = ModLoader.load_texture_from_path(mod_path)
+	else:
+		# jika bukan asset mod, cari di res://
+		var accessory_lower = _convert_name_to_filename(accessory)
+		var accessory_path = "res://NPC/Accessories/Young/%s/character_large_%s_accessory_%s.png" % [gender_folder, gender_prefix, accessory_lower]
+		accessory_texture = load(accessory_path) as Texture2D
+	
 	if accessory_texture:
 		_accessory_sprite.texture = accessory_texture
 		

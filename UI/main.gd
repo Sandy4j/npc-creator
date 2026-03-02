@@ -30,6 +30,7 @@ var eye_swatches    : Array[ColorRect] = []
 var body_swatches   : Array[ColorRect] = []
 
 var _data_manager: NPCDataManager
+var _mod_loader: ModLoader
 
 var _current_npc_type: String = ""
 var _current_gender: String = ""
@@ -49,9 +50,13 @@ func _ready() -> void:
 	if not _data_manager.load_data():
 		result_label.text = "Error: Failed to load NPC data"
 		return
+	
+	_mod_loader = ModLoader.new()
+	_mod_loader.scan_mods()
 
 	_init_swatch_arrays()
 	character_preview.set_data_manager(_data_manager)
+	character_preview.set_mod_loader(_mod_loader)
 	_connect_signals()
 	_initialize_ui()
 	_show_swatch_containers()
@@ -112,9 +117,14 @@ func _update_gender_options() -> void:
 
 ## Update ui berdasarkan property yang dipilih 
 func _update_property_options() -> void:
+	# Get mod aset untuk gender yang dipilih
+	var mod_hairs = _mod_loader.get_mod_display_names("hair", _current_gender)
+	var mod_accessories = _mod_loader.get_mod_display_names("accessory", _current_gender)
+	
 	_populate_option_button(
 		option_hair_type,
-		NPCDataManager.extract_names(_data_manager.get_hair_types(_current_npc_type, _current_gender))
+		NPCDataManager.extract_names(_data_manager.get_hair_types(_current_npc_type, _current_gender)),
+		mod_hairs
 	)
 	
 	_populate_option_button(
@@ -124,7 +134,8 @@ func _update_property_options() -> void:
 	
 	_populate_option_button(
 		option_accessory,
-		NPCDataManager.extract_names(_data_manager.get_accessories(_current_npc_type, _current_gender))
+		NPCDataManager.extract_names(_data_manager.get_accessories(_current_npc_type, _current_gender)),
+		mod_accessories
 	)
 	
 	_populate_option_button(
@@ -150,10 +161,19 @@ func _update_property_options() -> void:
 	_update_all_swatches()
 	_update_preview()
 
-func _populate_option_button(button: OptionButton, items: Array) -> void:
+func _populate_option_button(button: OptionButton, items: Array, mod_items: Array[String] = []) -> void:
 	button.clear()
+	
 	for item in items:
 		button.add_item(str(item))
+	
+	# tambahkan mod items jika ada
+	for mod_item in mod_items:
+		var idx = button.item_count
+		button.add_item(mod_item)
+		# set metadata untuk item yang dibuat mod
+		button.set_item_metadata(idx, {"is_mod": true})
+	
 	if button.item_count > 0:
 		button.select(0)
 
@@ -300,9 +320,8 @@ func _on_randomize_pressed() -> void:
 	
 	result_label.text = "Randomized: " + config.hair_type + " (" + config.hair_color + ")"
 
-
 func _on_confirm_pressed() -> void:
-	result_label.text = "Saved"
+	_mod_loader.scan_mods()
 
 func _apply_configuration(config: NPCRandomizer.NPCConfiguration) -> void:
 	# pilih hair type dan color

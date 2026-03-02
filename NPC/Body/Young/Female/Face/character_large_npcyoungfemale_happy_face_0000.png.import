@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dyxsv7v71c1vi"
-path="res://.godot/imported/character_large_npcyoungfemale_happy_face_0000.png-b8b9f316280326263f4f1766e3ab13fa.ctex"
+uid="uid://cs6152k3kagv"
+path="res://.godot/imported/character_large_npcyoungfemale_happy_face_0000.png-c2b32ef8c60a3cd3fc392a1bab7bbc5b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://NPC/Body/Young/Female/Face/character_large_npcyoungfemale_happy_face_0000.png"
-dest_files=["res://.godot/imported/character_large_npcyoungfemale_happy_face_0000.png-b8b9f316280326263f4f1766e3ab13fa.ctex"]
+source_file="res://NPC/Body/Young/Female/face/character_large_npcyoungfemale_happy_face_0000.png"
+dest_files=["res://.godot/imported/character_large_npcyoungfemale_happy_face_0000.png-c2b32ef8c60a3cd3fc392a1bab7bbc5b.ctex"]
 
 [params]
 
