@@ -4,6 +4,7 @@ extends RefCounted
 ## Handle load mods assets
 
 const MOD_PREFIX = "[MOD] "
+const MOD_NPC_PROPERTIES_FILE = "NPC_Properties.json"
 const ASSET_CATEGORIES = {
 	"hair": "NPC/Hairs/Young",
 	"accessory": "NPC/Accessories/Young",
@@ -22,6 +23,9 @@ var _mod_assets: Dictionary = {}
 ## Penyimpanan mod outfit per gender_key -> outfit_type -> absolute_path
 ## Contoh: _mod_outfits["young_male"]["hacker"] = "/path/character_large_npcyoungmale_outfit_hacker.png"
 var _mod_outfits: Dictionary = {}
+
+## Cache parsed data dari mods/NPC_Properties.json jika ada
+var _mod_npc_data: Dictionary = {}
 
 ## GET mods folder path yang berada dalam satu folder dengan executable
 func _get_mods_folder_path() -> String:
@@ -43,6 +47,7 @@ func get_mods_path() -> String:
 func scan_mods() -> void:
 	_mod_assets.clear()
 	_mod_outfits.clear()
+	_mod_npc_data.clear()
 	
 	var mods_path = get_mods_path()
 	
@@ -50,6 +55,9 @@ func scan_mods() -> void:
 	if not DirAccess.dir_exists_absolute(mods_path):
 		# skip jika folder mods tidak ada
 		return
+	
+	# scan dan parse mods/NPC_Properties.json jika ada, simpan ke _mod_npc_data
+	_scan_npc_properties(mods_path)
 	
 	# scan folder mods untuk setiap kategori
 	for category in ASSET_CATEGORIES.keys():
@@ -64,7 +72,7 @@ func scan_mods() -> void:
 			
 			_scan_folder_for_pngs(category_path, category, gender_key)
 			
-			# Khusus outfit: scan dan petakan ke npc_type untuk override prioritas
+			# Khusus outfit: priorize outfit yang di-override 
 			if category == "outfit":
 				_scan_outfit_folder(category_path, gender_key)
 
@@ -113,6 +121,40 @@ func _scan_outfit_folder(folder_path: String, gender_key: String) -> void:
 		file_name = dir.get_next()
 	
 	dir.list_dir_end()
+
+## Scan dan parse mods/NPC_Properties.json jika ada
+## Data yang berhasil di-parse disimpan ke _mod_npc_data
+func _scan_npc_properties(mods_path: String) -> void:
+	var json_path = mods_path.path_join(MOD_NPC_PROPERTIES_FILE)
+	
+	if not FileAccess.file_exists(json_path):
+		return
+	
+	var file = FileAccess.open(json_path, FileAccess.READ)
+	if file == null:
+		push_warning("ModLoader: Cannot open mod NPC_Properties.json at: " + json_path)
+		return
+	
+	var json_text = file.get_as_text()
+	file.close()
+	
+	var json = JSON.new()
+	var err = json.parse(json_text)
+	if err != OK:
+		push_warning("ModLoader: Failed to parse mod NPC_Properties.json - " + json.get_error_message())
+		return
+	
+	_mod_npc_data = json.get_data()
+	print("ModLoader: Loaded mod NPC_Properties.json from: " + json_path)
+
+## Cek apakah ada mod NPC_Properties.json yang sudah di-load
+func has_mod_npc_data() -> bool:
+	return not _mod_npc_data.is_empty()
+
+## GET data mod NPC_Properties yang sudah di-parse
+func get_mod_npc_data() -> Dictionary:
+	# jika tidak ada, kembalikan data kosong
+	return _mod_npc_data
 
 ## Cek apakah ada mod outfit untuk npc_type dan gender_key
 ## npc_type format: "NPC_Hacker" atau "hacker"

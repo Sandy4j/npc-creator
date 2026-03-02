@@ -100,7 +100,7 @@ func _get_scene_path(npc_type: String, gender: String) -> String:
 	# npc_type format: "NPC_Hacker" -> "Hacker"
 	var type_name = npc_type.replace("NPC_", "")
 	var gender_name = GENDER_SCENE_MAP.get(gender, "YoungMale")
-	return "res://Scene/NPC%s%s.tscn" % [type_name, gender_name]
+	return "res://ScenesNPC/NPC%s%s.tscn" % [type_name, gender_name]
 
 ## Load NPC scene berdasarkan type dan gender
 func _load_npc_scene(npc_type: String, gender: String) -> bool:

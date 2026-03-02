@@ -53,6 +53,10 @@ func _ready() -> void:
 	
 	_mod_loader = ModLoader.new()
 	_mod_loader.scan_mods()
+	
+	# Terapkan override NPC_Properties dari mods/ jika ada
+	if _mod_loader.has_mod_npc_data():
+		_data_manager.apply_mod_overrides(_mod_loader.get_mod_npc_data())
 
 	_init_swatch_arrays()
 	character_preview.set_data_manager(_data_manager)
@@ -79,7 +83,7 @@ func _connect_signals() -> void:
 	option_eye_color.item_selected.connect(_on_eye_color_selected)
 	option_body_color.item_selected.connect(_on_body_color_selected)
 	randomize_button.pressed.connect(_on_randomize_pressed)
-	confirm_button.pressed.connect(_on_confirm_pressed)
+	confirm_button.pressed.connect(_on_reload_pressed)
 
 func _show_swatch_containers() -> void:
 	_hair_swatch_container.visible   = true
@@ -320,8 +324,31 @@ func _on_randomize_pressed() -> void:
 	
 	result_label.text = "Randomized: " + config.hair_type + " (" + config.hair_color + ")"
 
-func _on_confirm_pressed() -> void:
+func _on_reload_pressed() -> void:
 	_mod_loader.scan_mods()
+	if _mod_loader.has_mod_npc_data():
+		_data_manager.apply_mod_overrides(_mod_loader.get_mod_npc_data())
+	_update_property_options()
+
+	# Array untuk menyimpan nama-nama mod yang sudah ditampilkan
+	var mod_names: Array[String] = []
+
+	# Dapatkan nama mod
+	var mod_hairs = _mod_loader.get_mod_display_names("hair", _current_gender)
+	var mod_accessories = _mod_loader.get_mod_display_names("accessory", _current_gender)
+	for hair_name in mod_hairs:
+		if not mod_names.has(hair_name):
+			mod_names.append(hair_name)
+	for acc_name in mod_accessories:
+		if not mod_names.has(acc_name):
+			mod_names.append(acc_name)
+
+	# Tampilkan nama mod yang sudah dimuat
+	if mod_names.size() > 0:
+		result_label.text = "Loaded Mods: " + ", ".join(mod_names)
+	else:
+		result_label.text = "No mods loaded"
+	
 
 func _apply_configuration(config: NPCRandomizer.NPCConfiguration) -> void:
 	# pilih hair type dan color

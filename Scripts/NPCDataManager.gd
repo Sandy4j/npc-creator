@@ -122,3 +122,50 @@ static func extract_names(npc_array: Array) -> Array:
 ## GET nama color
 func get_all_color_names() -> Array:
 	return get_all_colors().keys()
+
+## Terapkan override data dari mods/NPC_Properties.json
+## Mod data akan menimpa (deep merge) data base untuk key yang sama.
+## Jika mod menambahkan NPC type / gender baru, itu juga akan ditambahkan.
+func apply_mod_overrides(mod_data: Dictionary) -> void:
+	if mod_data.is_empty():
+		return
+	
+	# Merge colors jika ada di mod
+	if mod_data.has("colors"):
+		var mod_colors: Dictionary = mod_data["colors"]
+		var base_colors: Dictionary = _data.get("colors", {})
+		for color_name in mod_colors.keys():
+			base_colors[color_name] = mod_colors[color_name]
+		_data["colors"] = base_colors
+	
+	# Merge outfit_types: deep merge per NPC type -> gender -> property
+	if mod_data.has("outfit_types"):
+		var mod_types: Dictionary = mod_data["outfit_types"]
+		var base_types: Dictionary = _data.get("outfit_types", {})
+		
+		for npc_type in mod_types.keys():
+			if not base_types.has(npc_type):
+				# NPC type baru dari mod, langsung tambahkan
+				base_types[npc_type] = mod_types[npc_type]
+			else:
+				var mod_genders: Dictionary = mod_types[npc_type]
+				var base_genders: Dictionary = base_types[npc_type]
+				
+				for gender_key in mod_genders.keys():
+					if not base_genders.has(gender_key):
+						# gender baru dari mod, langsung tambahkan
+						base_genders[gender_key] = mod_genders[gender_key]
+					else:
+						# Deep merge per property (hair_type, hair_colors, dll)
+						var mod_props: Dictionary = mod_genders[gender_key]
+						var base_props: Dictionary = base_genders[gender_key]
+						for prop_key in mod_props.keys():
+							base_props[prop_key] = mod_props[prop_key]
+						base_genders[gender_key] = base_props
+				
+				base_types[npc_type] = base_genders
+		
+		_data["outfit_types"] = base_types
+	
+	print("NPCDataManager: Mod NPC_Properties overrides applied.")
+
