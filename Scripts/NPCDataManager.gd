@@ -123,9 +123,86 @@ static func extract_names(npc_array: Array) -> Array:
 func get_all_color_names() -> Array:
 	return get_all_colors().keys()
 
+## Ekstrak age type dari gender key (misal "young_male" -> "Young", "adult_female" -> "Adult")
+static func get_age_from_gender_key(gender_key: String) -> String:
+	var parts = gender_key.split("_")
+	if parts.size() >= 2:
+		return parts[0].capitalize()
+	return gender_key.capitalize()
+
+## Ekstrak gender dari gender key (misal "young_male" -> "Male", "adult_female" -> "Female")
+static func get_gender_from_gender_key(gender_key: String) -> String:
+	var parts = gender_key.split("_")
+	if parts.size() >= 2:
+		return parts[1].capitalize()
+	return "Male"
+
+## Konvert gender key ke display name (misal "young_male" -> "Young Male")
+static func gender_key_to_display(gender_key: String) -> String:
+	var parts = gender_key.split("_")
+	var result: Array[String] = []
+	for p in parts:
+		result.append(str(p).capitalize())
+	return " ".join(result)
+
+## Konvert display name ke gender key (misal "Young Male" -> "young_male")
+static func display_to_gender_key(display_name: String) -> String:
+	return display_name.to_lower().replace(" ", "_")
+
+## GET semua age type yang unik dari seluruh data (misal ["Young", "Adult", "Old"])
+func get_all_age_types() -> Array[String]:
+	var age_set: Dictionary = {}
+	var outfit_types = get_outfit_types()
+	for npc_type in outfit_types.keys():
+		var genders: Dictionary = outfit_types[npc_type]
+		for gender_key in genders.keys():
+			var age = get_age_from_gender_key(gender_key)
+			age_set[age] = true
+	var result: Array[String] = []
+	for age in age_set.keys():
+		result.append(age)
+	return result
+
+## GET semua gender key yang cocok dengan age type tertentu (unique across all outfits)
+## Misal age "Young" -> ["young_male", "young_female"]
+func get_gender_keys_for_age(age_type: String) -> Array[String]:
+	var result_set: Dictionary = {}
+	var outfit_types = get_outfit_types()
+	for npc_type in outfit_types.keys():
+		var genders: Dictionary = outfit_types[npc_type]
+		for gender_key in genders.keys():
+			var age = get_age_from_gender_key(gender_key)
+			if age.to_lower() == age_type.to_lower():
+				result_set[gender_key] = true
+	var result: Array[String] = []
+	for gk in result_set.keys():
+		result.append(gk)
+	return result
+
+## GET outfit names yang tersedia untuk gender_key tertentu
+## Return: ["NPC_Hacker", "NPC_Student", ...]
+func get_outfits_for_gender(gender_key: String) -> Array[String]:
+	var result: Array[String] = []
+	var outfit_types = get_outfit_types()
+	for npc_type in outfit_types.keys():
+		var genders: Dictionary = outfit_types[npc_type]
+		if genders.has(gender_key):
+			result.append(npc_type)
+	return result
+
+## Build gender prefix untuk filename (misal "young_male" -> "npcyoungmale")
+static func build_gender_prefix(gender_key: String) -> String:
+	return "npc" + gender_key.replace("_", "")
+
+## Build scene name suffix (misal "young_male" -> "YoungMale")
+static func build_scene_suffix(gender_key: String) -> String:
+	var parts = gender_key.split("_")
+	var result = ""
+	for p in parts:
+		result += str(p).capitalize()
+	return result
+
 ## Terapkan override data dari mods/NPC_Properties.json
-## Mod data akan menimpa (deep merge) data base untuk key yang sama.
-## Jika mod menambahkan NPC type / gender baru, itu juga akan ditambahkan.
 func apply_mod_overrides(mod_data: Dictionary) -> void:
 	if mod_data.is_empty():
 		return
@@ -168,4 +245,3 @@ func apply_mod_overrides(mod_data: Dictionary) -> void:
 		_data["outfit_types"] = base_types
 	
 	print("NPCDataManager: Mod NPC_Properties overrides applied.")
-

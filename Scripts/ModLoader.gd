@@ -5,16 +5,14 @@ extends RefCounted
 
 const MOD_PREFIX = "[MOD] "
 const MOD_NPC_PROPERTIES_FILE = "NPC_Properties.json"
-const ASSET_CATEGORIES = {
-	"hair": "NPC/Hairs/Young",
-	"accessory": "NPC/Accessories/Young",
-	"outfit": "NPC/Outfits/Young",
-	"body": "NPC/Body/Young"
+const ASSET_CATEGORY_BASES = {
+	"hair": "NPC/Hairs",
+	"accessory": "NPC/Accessories",
+	"outfit": "NPC/Outfits",
+	"body": "NPC/Body"
 }
-const GENDER_FOLDERS = {
-	"young_male": "Male",
-	"young_female": "Female"
-}
+## Gender folder yang dikenali di dalam setiap age folder
+const GENDER_FOLDER = ["Male", "Female"]
 
 ## Penyimpanan data mod assets yang sudah di-scan
 ## Contoh: _mod_assets["hair"]["young_male"]["Custom"] = "/path/character_large_npcyoungmale_hair_custom.png"
@@ -59,22 +57,48 @@ func scan_mods() -> void:
 	# scan dan parse mods/NPC_Properties.json jika ada, simpan ke _mod_npc_data
 	_scan_npc_properties(mods_path)
 	
-	# scan folder mods untuk setiap kategori
-	for category in ASSET_CATEGORIES.keys():
+	# scan folder mods untuk setiap kategori secara dinamis
+	for category in ASSET_CATEGORY_BASES.keys():
 		_mod_assets[category] = {}
+		var base_path = mods_path.path_join(ASSET_CATEGORY_BASES[category])
 		
-		for gender_key in GENDER_FOLDERS.keys():
-			_mod_assets[category][gender_key] = {}
+		# scan subfolder age (Young, Adult, Old, Robot, dll)
+		var age_folders = _list_subdirs(base_path)
+		for age_folder in age_folders:
+			var age_path = base_path.path_join(age_folder)
 			
-			# jika folder gender tidak ada, skip
-			var gender_folder = GENDER_FOLDERS[gender_key]
-			var category_path = mods_path.path_join(ASSET_CATEGORIES[category]).path_join(gender_folder)
-			
-			_scan_folder_for_pngs(category_path, category, gender_key)
-			
-			# Khusus outfit: priorize outfit yang di-override 
-			if category == "outfit":
-				_scan_outfit_folder(category_path, gender_key)
+			# scan subfolder Gender di dalam age folder
+			for gen_folder in GENDER_FOLDER:
+				var gender_path = age_path.path_join(gen_folder)
+				if not DirAccess.dir_exists_absolute(gender_path):
+					continue
+				
+				# Build gender key: "young_male", "adult_female", dll
+				var gender_key = age_folder.to_lower() + "_" + gen_folder.to_lower()
+				
+				if not _mod_assets[category].has(gender_key):
+					_mod_assets[category][gender_key] = {}
+				
+				_scan_folder_for_pngs(gender_path, category, gender_key)
+				
+				# Khusus outfit: prioritize outfit yang di-override
+				if category == "outfit":
+					_scan_outfit_folder(gender_path, gender_key)
+
+## List subdirectories di folder yang diberikan
+func _list_subdirs(folder_path: String) -> Array[String]:
+	var result: Array[String] = []
+	var dir = DirAccess.open(folder_path)
+	if dir == null:
+		return result
+	dir.list_dir_begin()
+	var name = dir.get_next()
+	while name != "":
+		if dir.current_is_dir() and not name.begins_with("."):
+			result.append(name)
+		name = dir.get_next()
+	dir.list_dir_end()
+	return result
 
 ## Scan folder untuk file PNG dan simpan path-nya dalam _mod_assets
 func _scan_folder_for_pngs(folder_path: String, category: String, gender_key: String) -> void:
