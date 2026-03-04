@@ -284,6 +284,52 @@ static func load_texture_from_path(absolute_path: String) -> ImageTexture:
 		return null
 	return ImageTexture.create_from_image(image)
 
+## GET absolute path mod body untuk gender_key
+## Cek apakah file body ada di mods folder
+func get_mod_body_path(gender_key: String) -> String:
+	var mods_path = get_mods_path()
+	var parts = gender_key.split("_")
+	if parts.size() < 2:
+		return ""
+	var age_folder = parts[0].capitalize()
+	var gender_folder = parts[1].capitalize()
+	var gender_prefix = "npc" + gender_key.replace("_", "")
+	var body_path = mods_path.path_join("NPC/Body/%s/%s/character_large_%s_body.png" % [age_folder, gender_folder, gender_prefix])
+	if FileAccess.file_exists(body_path):
+		return body_path
+	return ""
+
+## GET absolute path mod face untuk gender_key
+func get_mod_face_path(gender_key: String) -> String:
+	var mods_path = get_mods_path()
+	var parts = gender_key.split("_")
+	if parts.size() < 2:
+		return ""
+	var age_folder = parts[0].capitalize()
+	var gender_folder = parts[1].capitalize()
+	var gender_prefix = "npc" + gender_key.replace("_", "")
+	var face_path = mods_path.path_join("NPC/Body/%s/%s/face/character_large_%s_neutral_face_0000.png" % [age_folder, gender_folder, gender_prefix])
+	if FileAccess.file_exists(face_path):
+		return face_path
+	return ""
+
+## GET absolute path mod asset berdasarkan category, gender_key, dan file path pattern
+## Digunakan untuk fallback ketika res:// tidak tersedia
+func get_mod_asset_path_by_filename(category: String, gender_key: String, filename: String) -> String:
+	var mods_path = get_mods_path()
+	var parts = gender_key.split("_")
+	if parts.size() < 2:
+		return ""
+	var age_folder = parts[0].capitalize()
+	var gender_folder = parts[1].capitalize()
+	var base_folder = ASSET_CATEGORY_BASES.get(category, "")
+	if base_folder.is_empty():
+		return ""
+	var full_path = mods_path.path_join("%s/%s/%s/%s" % [base_folder, age_folder, gender_folder, filename])
+	if FileAccess.file_exists(full_path):
+		return full_path
+	return ""
+
 ## Cek apakah ada mod yang dimuat
 func has_mods() -> bool:
 	for category in _mod_assets.keys():

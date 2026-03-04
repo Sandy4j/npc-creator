@@ -93,10 +93,10 @@ func _load_all_assets(npc_type: String, gender: String, hair_type: String, hair_
 	var gender_prefix = NPCDataManager.build_gender_prefix(gender)
 	
 	# Load body
-	_asset_loader.load_body(_scene_manager.body_sprite, age_folder, gender_folder, gender_prefix, body_color)
+	_asset_loader.load_body(_scene_manager.body_sprite, age_folder, gender_folder, gender_prefix, body_color, gender)
 	
 	# Load face
-	_asset_loader.load_face(_scene_manager.face_sprite, age_folder, gender_folder, gender_prefix, eye_color, body_color)
+	_asset_loader.load_face(_scene_manager.face_sprite, age_folder, gender_folder, gender_prefix, eye_color, body_color, gender)
 	
 	# Load outfit
 	_asset_loader.load_outfit(_scene_manager.outfit_sprite, npc_type, age_folder, gender_folder, gender_prefix, outfit_color, body_color, gender)

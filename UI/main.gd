@@ -133,12 +133,12 @@ func _update_property_options() -> void:
 	
 	_populate_option_button(
 		option_hair_type,
-		NPCDataManager.extract_names(_data_manager.get_hair_types(_current_outfit, _current_gender)),
+		NPCDataManager.extract_names(_asset_validator.get_valid_hair_types(_current_outfit, _current_gender)),
 		mod_hairs
 	)
 	_populate_option_button(
 		option_accessory,
-		NPCDataManager.extract_names(_data_manager.get_accessories(_current_outfit, _current_gender)),
+		NPCDataManager.extract_names(_asset_validator.get_valid_accessories(_current_outfit, _current_gender)),
 		mod_accessories
 	)
 	

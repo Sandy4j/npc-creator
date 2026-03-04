@@ -39,12 +39,21 @@ func set_mod_loader(loader: ModLoader) -> void:
 
 ## Load body texture dan apply shader
 func load_body(sprite: Sprite2D, age_folder: String, gender_folder: String, 
-		gender_prefix: String, body_color: String) -> void:
+		gender_prefix: String, body_color: String, gender: String = "") -> void:
 	if sprite == null:
 		return
 	
-	var body_path = "res://NPC/Body/%s/%s/character_large_%s_body.png" % [age_folder, gender_folder, gender_prefix]
-	var body_texture = load(body_path) as Texture2D
+	var body_texture: Texture2D = null
+	
+	# Cek mod body terlebih dahulu
+	if _mod_loader and not gender.is_empty():
+		var mod_body_path = _mod_loader.get_mod_body_path(gender)
+		if not mod_body_path.is_empty():
+			body_texture = ModLoader.load_texture_from_path(mod_body_path)
+	
+	if body_texture == null:
+		var body_path = "res://NPC/Body/%s/%s/character_large_%s_body.png" % [age_folder, gender_folder, gender_prefix]
+		body_texture = load(body_path) as Texture2D
 	
 	if body_texture:
 		sprite.texture = body_texture
@@ -60,12 +69,21 @@ func _apply_body_shader(sprite: Sprite2D, body_color: String) -> void:
 
 ## Load face texture dan apply shader
 func load_face(sprite: Sprite2D, age_folder: String, gender_folder: String, 
-		gender_prefix: String, eye_color: String, body_color: String) -> void:
+		gender_prefix: String, eye_color: String, body_color: String, gender: String = "") -> void:
 	if sprite == null:
 		return
 	
-	var face_path = "res://NPC/Body/%s/%s/face/character_large_%s_neutral_face_0000.png" % [age_folder, gender_folder, gender_prefix]
-	var face_texture = load(face_path) as Texture2D
+	var face_texture: Texture2D = null
+	
+	# Cek mod face terlebih dahulu
+	if _mod_loader and not gender.is_empty():
+		var mod_face_path = _mod_loader.get_mod_face_path(gender)
+		if not mod_face_path.is_empty():
+			face_texture = ModLoader.load_texture_from_path(mod_face_path)
+	
+	if face_texture == null:
+		var face_path = "res://NPC/Body/%s/%s/face/character_large_%s_neutral_face_0000.png" % [age_folder, gender_folder, gender_prefix]
+		face_texture = load(face_path) as Texture2D
 	
 	if face_texture:
 		sprite.texture = face_texture
