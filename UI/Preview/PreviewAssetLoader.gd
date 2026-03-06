@@ -53,7 +53,8 @@ func load_body(sprite: Sprite2D, age_folder: String, gender_folder: String,
 	
 	if body_texture == null:
 		var body_path = "res://NPC/Body/%s/%s/character_large_%s_body.png" % [age_folder, gender_folder, gender_prefix]
-		body_texture = load(body_path) as Texture2D
+		if ResourceLoader.exists(body_path):
+			body_texture = load(body_path) as Texture2D
 	
 	if body_texture:
 		sprite.texture = body_texture
@@ -83,7 +84,8 @@ func load_face(sprite: Sprite2D, age_folder: String, gender_folder: String,
 	
 	if face_texture == null:
 		var face_path = "res://NPC/Body/%s/%s/face/character_large_%s_neutral_face_0000.png" % [age_folder, gender_folder, gender_prefix]
-		face_texture = load(face_path) as Texture2D
+		if ResourceLoader.exists(face_path):
+			face_texture = load(face_path) as Texture2D
 	
 	if face_texture:
 		sprite.texture = face_texture
@@ -115,16 +117,29 @@ func load_outfit(sprite: Sprite2D, npc_type: String, age_folder: String, gender_
 func _get_outfit_texture(npc_type: String, age_folder: String, gender_folder: String, 
 		gender_prefix: String, gender: String) -> Texture2D:
 	var outfit_texture: Texture2D = null
+	var clean_npc_type = ModLoader.strip_mod_prefix(npc_type) if ModLoader.is_mod_asset(npc_type) else npc_type
 	
 	# Prioritaskan mod outfit jika tersedia
-	if _mod_loader and _mod_loader.has_mod_outfit(npc_type, gender):
-		var mod_path = _mod_loader.get_mod_outfit_path(npc_type, gender)
+	if _mod_loader and _mod_loader.has_mod_outfit(clean_npc_type, gender):
+		var mod_path = _mod_loader.get_mod_outfit_path(clean_npc_type, gender)
 		outfit_texture = ModLoader.load_texture_from_path(mod_path)
+		if outfit_texture:
+			return outfit_texture
 	
-	# Fallback ke built-in asset jika tidak ada mod
-	if outfit_texture == null:
-		var outfit_type = npc_type.to_lower().replace("npc_", "")
-		var outfit_path = "res://NPC/Outfits/%s/%s/character_large_%s_outfit_%s.png" % [age_folder, gender_folder, gender_prefix, outfit_type]
+	var outfit_type = clean_npc_type.to_lower().replace("npc_", "")
+	var filename = "character_large_%s_outfit_%s.png" % [gender_prefix, outfit_type]
+	
+	# Untuk non-young, cek mods folder
+	if age_folder.to_lower() != "young" and _mod_loader:
+		var mod_path = _mod_loader.get_mod_asset_path_by_filename("outfit", gender, filename)
+		if not mod_path.is_empty():
+			outfit_texture = ModLoader.load_texture_from_path(mod_path)
+			if outfit_texture:
+				return outfit_texture
+	
+	# Fallback ke built-in asset
+	var outfit_path = "res://NPC/Outfits/%s/%s/%s" % [age_folder, gender_folder, filename]
+	if ResourceLoader.exists(outfit_path):
 		outfit_texture = load(outfit_path) as Texture2D
 	
 	return outfit_texture
@@ -161,14 +176,27 @@ func _get_hair_texture(hair_type: String, age_folder: String, gender_folder: Str
 		gender_prefix: String, gender: String) -> Texture2D:
 	var hair_texture: Texture2D = null
 	
-	# Cek apakah ini adalah asset mod terlebih dahulu
+	# Cek apakah ini adalah asset mod terlebih dahulu (dengan prefix [MOD])
 	if ModLoader.is_mod_asset(hair_type) and _mod_loader:
 		var mod_path = _mod_loader.get_mod_asset_path("hair", gender, hair_type)
 		hair_texture = ModLoader.load_texture_from_path(mod_path)
-	else:
-		# Jika bukan asset mod, cari di res://
-		var hair_type_lower = _convert_name_to_filename(hair_type)
-		var hair_path = "res://NPC/Hairs/%s/%s/character_large_%s_hair_%s.png" % [age_folder, gender_folder, gender_prefix, hair_type_lower]
+		if hair_texture:
+			return hair_texture
+	
+	var hair_type_lower = _convert_name_to_filename(hair_type)
+	var filename = "character_large_%s_hair_%s.png" % [gender_prefix, hair_type_lower]
+	
+	# Untuk non-young, prioritaskan mods folder
+	if age_folder.to_lower() != "young" and _mod_loader:
+		var mod_path = _mod_loader.get_mod_asset_path_by_filename("hair", gender, filename)
+		if not mod_path.is_empty():
+			hair_texture = ModLoader.load_texture_from_path(mod_path)
+			if hair_texture:
+				return hair_texture
+	
+	# Coba load dari res://
+	var hair_path = "res://NPC/Hairs/%s/%s/%s" % [age_folder, gender_folder, filename]
+	if ResourceLoader.exists(hair_path):
 		hair_texture = load(hair_path) as Texture2D
 	
 	return hair_texture
@@ -218,14 +246,27 @@ func _get_accessory_texture(accessory: String, age_folder: String, gender_folder
 		gender_prefix: String, gender: String) -> Texture2D:
 	var accessory_texture: Texture2D = null
 	
-	# Cek apakah ini adalah asset mod terlebih dahulu
+	# Cek apakah ini adalah asset mod terlebih dahulu (dengan prefix [MOD])
 	if ModLoader.is_mod_asset(accessory) and _mod_loader:
 		var mod_path = _mod_loader.get_mod_asset_path("accessory", gender, accessory)
 		accessory_texture = ModLoader.load_texture_from_path(mod_path)
-	else:
-		# Jika bukan asset mod, cari di res://
-		var accessory_lower = _convert_name_to_filename(accessory)
-		var accessory_path = "res://NPC/Accessories/%s/%s/character_large_%s_accessory_%s.png" % [age_folder, gender_folder, gender_prefix, accessory_lower]
+		if accessory_texture:
+			return accessory_texture
+	
+	var accessory_lower = _convert_name_to_filename(accessory)
+	var filename = "character_large_%s_accessory_%s.png" % [gender_prefix, accessory_lower]
+	
+	# Untuk non-young, prioritaskan mods folder
+	if age_folder.to_lower() != "young" and _mod_loader:
+		var mod_path = _mod_loader.get_mod_asset_path_by_filename("accessory", gender, filename)
+		if not mod_path.is_empty():
+			accessory_texture = ModLoader.load_texture_from_path(mod_path)
+			if accessory_texture:
+				return accessory_texture
+	
+	# Coba load dari res://
+	var accessory_path = "res://NPC/Accessories/%s/%s/%s" % [age_folder, gender_folder, filename]
+	if ResourceLoader.exists(accessory_path):
 		accessory_texture = load(accessory_path) as Texture2D
 	
 	return accessory_texture

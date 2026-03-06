@@ -1,0 +1,121 @@
+[gd_scene load_steps=12 format=3 uid="uid://bde4718bkagfi"]
+
+[ext_resource type="Shader" uid="uid://n35u8pwe071u" path="res://Shaders/shader1.gdshader" id="1_nwq61"]
+[ext_resource type="Texture2D" uid="uid://bl7uun6gtrbiw" path="res://NPC/Body/Young/Male/character_large_npcyoungmale_body.png" id="2_uvhay"]
+[ext_resource type="Texture2D" uid="uid://c4loa7pnmkpty" path="res://NPC/Body/Young/Male/face/character_large_npcyoungmale_neutral_face_0000.png" id="3_iastn"]
+[ext_resource type="Texture2D" uid="uid://o6l7ihf7daou" path="res://NPC/Hairs/Young/Male/character_large_npcyoungmale_hair_wavyshort.png" id="4_cyrcp"]
+[ext_resource type="Texture2D" uid="uid://ct5nixgyhlu63" path="res://NPC/Accessories/Young/Male/character_large_npcyoungmale_accessory_mask.png" id="5_qew7l"]
+[ext_resource type="Material" uid="uid://s3piwpfcae72" path="res://Shaders/HairTemplate.tres" id="6_76nqy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d436w"]
+shader = ExtResource("1_nwq61")
+shader_parameter/is_fade = false
+shader_parameter/enabled = true
+shader_parameter/invisible = Vector4(0, 0, 0, 0)
+shader_parameter/fade_color = Vector4(0, 0, 0, 1)
+shader_parameter/replace_0 = Color(0, 0.53333336, 0, 1)
+shader_parameter/replace_1 = Color(0, 1, 0, 1)
+shader_parameter/replace_2 = Color(0, 0.34117648, 0, 1)
+shader_parameter/replace_3 = Color(0, 0, 0.27058825, 1)
+shader_parameter/replace_4 = Color(0.627451, 0.827451, 1, 1)
+shader_parameter/replace_5 = Color(0.9647059, 0.6509804, 0, 1)
+shader_parameter/replace_6 = Color(0, 0.77254903, 0, 1)
+shader_parameter/replace_7 = Color(1, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ow0ry"]
+shader = ExtResource("1_nwq61")
+shader_parameter/is_fade = false
+shader_parameter/enabled = true
+shader_parameter/invisible = Vector4(0, 0, 0, 0)
+shader_parameter/fade_color = Vector4(0, 0, 0, 1)
+shader_parameter/replace_0 = Color(0, 0.53333336, 0, 1)
+shader_parameter/replace_1 = Color(0, 1, 0, 1)
+shader_parameter/replace_2 = Color(0, 0.34117648, 0, 1)
+shader_parameter/replace_3 = Color(0, 0, 0.27058825, 1)
+shader_parameter/replace_4 = Color(0.627451, 0.827451, 1, 1)
+shader_parameter/replace_5 = Color(0.9647059, 0.6509804, 0, 1)
+shader_parameter/replace_6 = Color(0, 0.77254903, 0, 1)
+shader_parameter/replace_7 = Color(1, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5c8jk"]
+shader = ExtResource("1_nwq61")
+shader_parameter/is_fade = false
+shader_parameter/enabled = true
+shader_parameter/invisible = Vector4(0, 0, 0, 0)
+shader_parameter/fade_color = Vector4(0, 0, 0, 1)
+shader_parameter/replace_0 = Color(0, 0.53333336, 0, 1)
+shader_parameter/replace_1 = Color(0, 1, 0, 1)
+shader_parameter/replace_2 = Color(0, 0.34117648, 0, 1)
+shader_parameter/replace_3 = Color(0, 0, 0.27058825, 1)
+shader_parameter/replace_4 = Color(0.627451, 0.827451, 1, 1)
+shader_parameter/replace_5 = Color(0.9647059, 0.6509804, 0, 1)
+shader_parameter/replace_6 = Color(0, 0.77254903, 0, 1)
+shader_parameter/replace_7 = Color(1, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3byji"]
+shader = ExtResource("1_nwq61")
+shader_parameter/is_fade = false
+shader_parameter/enabled = true
+shader_parameter/invisible = Vector4(0, 0, 0, 0)
+shader_parameter/fade_color = Vector4(0, 0, 0, 1)
+shader_parameter/replace_0 = Color(0, 0.53333336, 0, 1)
+shader_parameter/replace_1 = Color(0, 1, 0, 1)
+shader_parameter/replace_2 = Color(0, 0.34117648, 0, 1)
+shader_parameter/replace_3 = Color(0, 0, 0.27058825, 1)
+shader_parameter/replace_4 = Color(0.627451, 0.827451, 1, 1)
+shader_parameter/replace_5 = Color(0.9647059, 0.6509804, 0, 1)
+shader_parameter/replace_6 = Color(0, 0.77254903, 0, 1)
+shader_parameter/replace_7 = Color(1, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mdx57"]
+shader = ExtResource("1_nwq61")
+shader_parameter/is_fade = false
+shader_parameter/enabled = true
+shader_parameter/invisible = Vector4(0, 0, 0, 0)
+shader_parameter/fade_color = Vector4(0, 0, 0, 1)
+shader_parameter/replace_0 = Color(0, 0.53333336, 0, 1)
+shader_parameter/replace_1 = Color(0, 1, 0, 1)
+shader_parameter/replace_2 = Color(0, 0.34117648, 0, 1)
+shader_parameter/replace_3 = Color(0, 0, 0.27058825, 1)
+shader_parameter/replace_4 = Color(0.627451, 0.827451, 1, 1)
+shader_parameter/replace_5 = Color(0.9647059, 0.6509804, 0, 1)
+shader_parameter/replace_6 = Color(0, 0.77254903, 0, 1)
+shader_parameter/replace_7 = Color(1, 0, 0, 1)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="CanvasGroup" type="CanvasGroup" parent="."]
+
+[node name="CharacterBody" type="Sprite2D" parent="CanvasGroup"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_d436w")
+texture = ExtResource("2_uvhay")
+
+[node name="CharacterFace" type="Sprite2D" parent="CanvasGroup"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_ow0ry")
+position = Vector2(2, -167)
+texture = ExtResource("3_iastn")
+
+[node name="CharacterOutfit" type="Sprite2D" parent="CanvasGroup"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_5c8jk")
+
+[node name="CharacterHair" type="Sprite2D" parent="CanvasGroup"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_3byji")
+position = Vector2(3, -186)
+texture = ExtResource("4_cyrcp")
+
+[node name="CharacterAcc" type="Sprite2D" parent="CanvasGroup"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_mdx57")
+position = Vector2(0, -179)
+texture = ExtResource("5_qew7l")
+offset = Vector2(2.5, 0)
+
+[node name="CharacterHair2" type="Sprite2D" parent="CanvasGroup"]
+texture_filter = 1
+material = ExtResource("6_76nqy")
+position = Vector2(3, -186)
+texture = ExtResource("4_cyrcp")

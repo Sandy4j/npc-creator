@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bdgnwq0bvtyqg"
-path="res://.godot/imported/character_large_npcyoungmale_accessory_glassescirclered (2).png-07418b81dd61599e32e3b7e6487c91e6.ctex"
+path="res://.godot/imported/character_large_npcyoungmale_accessory_glassescirclered (2).png-56461077df682b3cb5cd5e110b74be2f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://NPC/Accessories/Young/Male/character_large_npcyoungmale_accessory_glassescirclered (2).png"
-dest_files=["res://.godot/imported/character_large_npcyoungmale_accessory_glassescirclered (2).png-07418b81dd61599e32e3b7e6487c91e6.ctex"]
+source_file="res://NPC/Accessories/Young/character_large_npcyoungmale_accessory_glassescirclered (2).png"
+dest_files=["res://.godot/imported/character_large_npcyoungmale_accessory_glassescirclered (2).png-56461077df682b3cb5cd5e110b74be2f.ctex"]
 
 [params]
 

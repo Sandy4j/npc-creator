@@ -128,38 +128,29 @@ func _update_outfit_options() -> void:
 		_current_outfit = ""
 
 func _update_property_options() -> void:
-	var mod_hairs = _mod_loader.get_mod_display_names("hair", _current_gender)
-	var mod_accessories = _mod_loader.get_mod_display_names("accessory", _current_gender)
-	
 	_populate_option_button(
 		option_hair_type,
-		NPCDataManager.extract_names(_asset_validator.get_valid_hair_types(_current_outfit, _current_gender)),
-		mod_hairs
+		NPCDataManager.extract_names(_asset_validator.get_valid_hair_types(_current_outfit, _current_gender))
 	)
 	_populate_option_button(
 		option_accessory,
-		NPCDataManager.extract_names(_asset_validator.get_valid_accessories(_current_outfit, _current_gender)),
-		mod_accessories
+		NPCDataManager.extract_names(_asset_validator.get_valid_accessories(_current_outfit, _current_gender))
 	)
 	
-	# Populate color pickers
-	_color_picker.populate(COLOR_HAIR, NPCDataManager.extract_names(_data_manager.get_hair_colors(_current_outfit, _current_gender)))
-	_color_picker.populate(COLOR_ACC, NPCDataManager.extract_names(_data_manager.get_accessory_colors(_current_outfit, _current_gender)))
-	_color_picker.populate(COLOR_OUTFIT, NPCDataManager.extract_names(_data_manager.get_outfit_colors(_current_outfit, _current_gender)))
-	_color_picker.populate(COLOR_EYE, NPCDataManager.extract_names(_data_manager.get_eye_colors(_current_outfit, _current_gender)))
-	_color_picker.populate(COLOR_BODY, NPCDataManager.extract_names(_data_manager.get_body_colors(_current_outfit, _current_gender)))
+	# Populate color pickers - use AssetValidator for fallback to all colors
+	_color_picker.populate(COLOR_HAIR, NPCDataManager.extract_names(_asset_validator.get_valid_hair_colors(_current_outfit, _current_gender)))
+	_color_picker.populate(COLOR_ACC, NPCDataManager.extract_names(_asset_validator.get_valid_accessory_colors(_current_outfit, _current_gender)))
+	_color_picker.populate(COLOR_OUTFIT, NPCDataManager.extract_names(_asset_validator.get_valid_outfit_colors(_current_outfit, _current_gender)))
+	_color_picker.populate(COLOR_EYE, NPCDataManager.extract_names(_asset_validator.get_valid_eye_colors(_current_outfit, _current_gender)))
+	_color_picker.populate(COLOR_BODY, NPCDataManager.extract_names(_asset_validator.get_valid_body_colors(_current_outfit, _current_gender)))
 	
 	_color_picker.update_all_chips()
 	_update_preview()
 
-func _populate_option_button(button: OptionButton, items: Array, mod_items: Array[String] = []) -> void:
+func _populate_option_button(button: OptionButton, items: Array) -> void:
 	button.clear()
 	for item in items:
 		button.add_item(str(item))
-	for mod_item in mod_items:
-		var idx = button.item_count
-		button.add_item(mod_item)
-		button.set_item_metadata(idx, {"is_mod": true})
 	if button.item_count > 0:
 		button.select(0)
 
@@ -222,8 +213,9 @@ func _on_color_selected(_category: String, _color_name: String) -> void:
 	_update_preview()
 
 func _on_randomize_pressed() -> void:
-	var config = NPCRandomizer.generate_random_for_type_and_gender(
-		_data_manager,
+	# Use AssetValidator for fallback when no JSON entry
+	var config = NPCRandomizer.generate_random_with_validator(
+		_asset_validator,
 		_current_outfit,
 		_current_gender
 	)
