@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cgdq1n8tvc06j" path="res://NPC/Body/Young/Female/character_large_npcyoungfemale_body.png" id="1_body"]
 [ext_resource type="Shader" uid="uid://n35u8pwe071u" path="res://Shaders/shader1.gdshader" id="1_seurq"]
 [ext_resource type="Texture2D" uid="uid://ow8ne22bs5pc" path="res://NPC/Outfits/Young/Female/character_large_npcyoungfemale_outfit_streamer.png" id="2_outfit"]
-[ext_resource type="Texture2D" uid="uid://0l0hv1vlpgtj" path="res://NPC/Body/Young/Female/Face/character_large_npcyoungfemale_neutral_face_0000.png" id="3_3qb03"]
+[ext_resource type="Texture2D" uid="uid://qx57dgluu822" path="res://NPC/Body/Young/Female/face/character_large_npcyoungfemale_neutral_face_0000.png" id="3_3qb03"]
 [ext_resource type="Texture2D" uid="uid://dk2ye3upn0dts" path="res://NPC/Hairs/Young/Female/character_large_npcyoungfemale_hair_longbang.png" id="3_hair"]
 [ext_resource type="Texture2D" uid="uid://bg20xn2p3ln2b" path="res://NPC/Accessories/Young/Female/character_large_npcyoungfemale_accessory_earringtop.png" id="4_acc"]
 [ext_resource type="Material" uid="uid://s3piwpfcae72" path="res://Shaders/HairTemplate.tres" id="6_seurq"]
@@ -102,21 +102,25 @@ texture = ExtResource("3_3qb03")
 texture_filter = 1
 material = SubResource("ShaderMaterial_5c8jk")
 texture = ExtResource("2_outfit")
+offset = Vector2(0.5, 0)
 
 [node name="CharacterHair" type="Sprite2D" parent="CanvasGroup"]
 texture_filter = 1
 material = SubResource("ShaderMaterial_3byji")
-position = Vector2(0, -160)
+position = Vector2(0, -162)
 texture = ExtResource("3_hair")
+offset = Vector2(0, -0.5)
 
 [node name="CharacterAcc" type="Sprite2D" parent="CanvasGroup"]
 texture_filter = 1
 material = SubResource("ShaderMaterial_mdx57")
-position = Vector2(0, -158)
+position = Vector2(0, -155)
 texture = ExtResource("4_acc")
+offset = Vector2(0.5, 0.5)
 
 [node name="CharacterHair2" type="Sprite2D" parent="CanvasGroup"]
 texture_filter = 1
 material = ExtResource("6_seurq")
-position = Vector2(0, -160)
+position = Vector2(0, -162)
 texture = ExtResource("3_hair")
+offset = Vector2(0, -0.5)

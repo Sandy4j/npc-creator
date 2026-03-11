@@ -106,18 +106,20 @@ texture = ExtResource("2_outfit")
 [node name="CharacterHair" type="Sprite2D" parent="CanvasGroup"]
 texture_filter = 1
 material = SubResource("ShaderMaterial_3byji")
-position = Vector2(3, -186)
+position = Vector2(3, -183)
 texture = ExtResource("3_hair")
+offset = Vector2(0, -0.5)
 
 [node name="CharacterAcc" type="Sprite2D" parent="CanvasGroup"]
 texture_filter = 1
 material = SubResource("ShaderMaterial_mdx57")
-position = Vector2(0, -179)
+position = Vector2(2, -179)
 texture = ExtResource("4_acc")
-offset = Vector2(2.5, 0)
+offset = Vector2(0.5, 0.5)
 
 [node name="CharacterHair2" type="Sprite2D" parent="CanvasGroup"]
 texture_filter = 1
 material = ExtResource("6_seurq")
-position = Vector2(3, -186)
+position = Vector2(3, -183)
 texture = ExtResource("3_hair")
+offset = Vector2(0, -0.5)
