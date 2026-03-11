@@ -76,48 +76,17 @@ func get_npc_properties(npc_type: String, gender: String) -> Dictionary:
 		return {}
 	return outfit_types[npc_type][gender]
 
-## GET tipe rambut
+## GET tipe rambut dari JSON
 func get_hair_types(npc_type: String, gender: String) -> Array:
 	var props = get_npc_properties(npc_type, gender)
 	return props.get("hair_type", [])
 
-## GET warna rambut
-func get_hair_colors(npc_type: String, gender: String) -> Array:
-	var props = get_npc_properties(npc_type, gender)
-	return props.get("hair_colors", [])
-
-## GET nama acc
+## GET accessories dari JSON
 func get_accessories(npc_type: String, gender: String) -> Array:
 	var props = get_npc_properties(npc_type, gender)
 	return props.get("accessories", [])
 
-## GET warna acc
-func get_accessory_colors(npc_type: String, gender: String) -> Array:
-	var props = get_npc_properties(npc_type, gender)
-	return props.get("accessory_colors", [])
 
-## GET warna outfit
-func get_outfit_colors(npc_type: String, gender: String) -> Array:
-	var props = get_npc_properties(npc_type, gender)
-	return props.get("outfit_colors", [])
-
-## GET warna mata
-func get_eye_colors(npc_type: String, gender: String) -> Array:
-	var props = get_npc_properties(npc_type, gender)
-	return props.get("eye_colors", [])
-
-## GET warna body
-func get_body_colors(npc_type: String, gender: String) -> Array:
-	var props = get_npc_properties(npc_type, gender)
-	return props.get("body_colors", [])
-
-## Ekstrak nama dari array
-static func extract_names(npc_array: Array) -> Array:
-	var names: Array = []
-	for item in npc_array:
-		if item is Array and item.size() >= 1:
-			names.append(item[0])
-	return names
 
 ## GET nama color
 func get_all_color_names() -> Array:

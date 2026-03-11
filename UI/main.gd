@@ -130,19 +130,19 @@ func _update_outfit_options() -> void:
 func _update_property_options() -> void:
 	_populate_option_button(
 		option_hair_type,
-		NPCDataManager.extract_names(_asset_validator.get_valid_hair_types(_current_outfit, _current_gender))
+		_asset_validator.get_valid_hair_types(_current_outfit, _current_gender)
 	)
 	_populate_option_button(
 		option_accessory,
-		NPCDataManager.extract_names(_asset_validator.get_valid_accessories(_current_outfit, _current_gender))
+		_asset_validator.get_valid_accessories(_current_outfit, _current_gender)
 	)
 	
-	# Populate color pickers - use AssetValidator for fallback to all colors
-	_color_picker.populate(COLOR_HAIR, NPCDataManager.extract_names(_asset_validator.get_valid_hair_colors(_current_outfit, _current_gender)))
-	_color_picker.populate(COLOR_ACC, NPCDataManager.extract_names(_asset_validator.get_valid_accessory_colors(_current_outfit, _current_gender)))
-	_color_picker.populate(COLOR_OUTFIT, NPCDataManager.extract_names(_asset_validator.get_valid_outfit_colors(_current_outfit, _current_gender)))
-	_color_picker.populate(COLOR_EYE, NPCDataManager.extract_names(_asset_validator.get_valid_eye_colors(_current_outfit, _current_gender)))
-	_color_picker.populate(COLOR_BODY, NPCDataManager.extract_names(_asset_validator.get_valid_body_colors(_current_outfit, _current_gender)))
+	# Populate color pickers - semua menggunakan colors dictionary langsung
+	_color_picker.populate(COLOR_HAIR, _asset_validator.get_all_color_options())
+	_color_picker.populate(COLOR_ACC, _asset_validator.get_all_color_options())
+	_color_picker.populate(COLOR_OUTFIT, _asset_validator.get_all_color_options())
+	_color_picker.populate(COLOR_EYE, _asset_validator.get_all_color_options())
+	_color_picker.populate(COLOR_BODY, _asset_validator.get_skin_tone_options())
 	
 	_color_picker.update_all_chips()
 	_update_preview()

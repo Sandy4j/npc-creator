@@ -219,115 +219,6 @@ func has_accessory_asset(acc_name: String, gender_key: String) -> bool:
 	var path = "res://NPC/Accessories/%s/%s/character_large_%s_accessory_%s.png" % [age, gender, prefix, filename]
 	return ResourceLoader.exists(path)
 
-## Scan folder untuk mendapatkan semua hair assets untuk gender_key
-func scan_hair_assets_from_folder(gender_key: String) -> Array:
-	var result: Array = []
-	var added: Dictionary = {}
-	var age = NPCDataManager.get_age_from_gender_key(gender_key)
-	var gender = NPCDataManager.get_gender_from_gender_key(gender_key)
-	var prefix = NPCDataManager.build_gender_prefix(gender_key)
-	var is_young = age.to_lower() == "young"
-	
-	# Untuk young, scan dari res://
-	if is_young:
-		var folder_path = "res://NPC/Hairs/%s/%s" % [age, gender]
-		var dir = DirAccess.open(folder_path)
-		if dir != null:
-			dir.list_dir_begin()
-			var file_name = dir.get_next()
-			while file_name != "":
-				if not dir.current_is_dir() and file_name.to_lower().ends_with(".png"):
-					var display_name = _extract_hair_display_name(file_name, prefix)
-					var key = display_name.to_lower()
-					if not display_name.is_empty() and not added.has(key):
-						result.append([display_name, 1])
-						added[key] = true
-				file_name = dir.get_next()
-			dir.list_dir_end()
-		var mod_assets = _mod_loader.get_mod_assets("hair", gender_key)
-		for display_name in mod_assets.keys():
-			var key = display_name.to_lower()
-			if not added.has(key):
-				var mod_display_name = ModLoader.MOD_PREFIX + display_name
-				result.append([mod_display_name, 1])
-				added[key] = true
-	else:
-		var mods_path = _mod_loader.get_mods_path()
-		var folder_path = mods_path.path_join("NPC/Hairs/%s/%s" % [age, gender])
-		var dir = DirAccess.open(folder_path)
-		if dir != null:
-			dir.list_dir_begin()
-			var file_name = dir.get_next()
-			while file_name != "":
-				if not dir.current_is_dir() and file_name.to_lower().ends_with(".png"):
-					var display_name = _extract_hair_display_name(file_name, prefix)
-					var key = display_name.to_lower()
-					if not display_name.is_empty() and not added.has(key):
-						result.append([display_name, 1])
-						added[key] = true
-				file_name = dir.get_next()
-			dir.list_dir_end()
-	
-	return result
-
-## Scan folder untuk mendapatkan semua accessory assets untuk gender_key
-func scan_accessory_assets_from_folder(gender_key: String) -> Array:
-	var result: Array = []
-	var added: Dictionary = {}
-	# selalu ada "none"
-	result.append(["none", 1])
-	added["none"] = true
-	
-	var age = NPCDataManager.get_age_from_gender_key(gender_key)
-	var gender = NPCDataManager.get_gender_from_gender_key(gender_key)
-	var prefix = NPCDataManager.build_gender_prefix(gender_key)
-	var is_young = age.to_lower() == "young"
-	
-	# Untuk young, scan dari res://
-	if is_young:
-		var folder_path = "res://NPC/Accessories/%s/%s" % [age, gender]
-		var dir = DirAccess.open(folder_path)
-		if dir != null:
-			dir.list_dir_begin()
-			var file_name = dir.get_next()
-			while file_name != "":
-				if not dir.current_is_dir() and file_name.to_lower().ends_with(".png"):
-					var display_name = _extract_accessory_display_name(file_name, prefix)
-					var key = display_name.to_lower()
-					if not display_name.is_empty() and not added.has(key):
-						result.append([display_name, 1])
-						added[key] = true
-				file_name = dir.get_next()
-			dir.list_dir_end()
-		
-		# Untuk young, cek mod assets tambahan (yang belum ada di base)
-		var mod_assets = _mod_loader.get_mod_assets("accessory", gender_key)
-		for display_name in mod_assets.keys():
-			var key = display_name.to_lower()
-			if not added.has(key):
-				var mod_display_name = ModLoader.MOD_PREFIX + display_name
-				result.append([mod_display_name, 1])
-				added[key] = true
-	else:
-		# Untuk non-young, scan dari mods folder absolute path
-		var mods_path = _mod_loader.get_mods_path()
-		var folder_path = mods_path.path_join("NPC/Accessories/%s/%s" % [age, gender])
-		var dir = DirAccess.open(folder_path)
-		if dir != null:
-			dir.list_dir_begin()
-			var file_name = dir.get_next()
-			while file_name != "":
-				if not dir.current_is_dir() and file_name.to_lower().ends_with(".png"):
-					var display_name = _extract_accessory_display_name(file_name, prefix)
-					var key = display_name.to_lower()
-					if not display_name.is_empty() and not added.has(key):
-						result.append([display_name, 1])
-						added[key] = true
-				file_name = dir.get_next()
-			dir.list_dir_end()
-	
-	return result
-
 ## Extract display name dari filename hair
 func _extract_hair_display_name(file_name: String, _prefix: String) -> String:
 	var base = file_name.get_basename().to_lower()
@@ -360,43 +251,39 @@ func _format_display_name_from_raw(raw_name: String) -> String:
 const SKIN_TONE_COLORS = ["Porcelain", "Light", "Beige", "Brown", "Tanned", "Dark"]
 
 ## GET semua color names TANPA skin tones (untuk hair, acc, outfit, eye)
-## Return: Array of [color_name, weight] dimana weight = 1 (equal probability)
+## Return: Array[String] - pure list of color names
 func get_all_color_options() -> Array:
 	var result: Array = []
 	for color_name in _data_manager.get_all_color_names():
 		# Skip skin tone
 		if color_name in SKIN_TONE_COLORS:
 			continue
-		result.append([color_name, 1])
+		result.append(color_name)
 	return result
 
 ## GET skin tone colors saja
+## Return: Array[String] - pure list of skin tone names
 func get_skin_tone_options() -> Array:
 	var result: Array = []
 	for tone in SKIN_TONE_COLORS:
-		result.append([tone, 1])
+		result.append(tone)
 	return result
 
-## Cek apakah outfit punya JSON entry
-func has_json_entry_for_outfit(outfit_name: String, gender_key: String) -> bool:
-	var props = _data_manager.get_npc_properties(outfit_name, gender_key)
-	return not props.is_empty()
-
-## GET valid hair types untuk outfit dan gender
-## Jika tidak ada JSON entry, scan dari folder assets
+## GET valid hair types untuk outfit dan gender - dari JSON
+## Return: Array[String] - pure list of hair names
 func get_valid_hair_types(outfit_name: String, gender_key: String) -> Array:
 	var result: Array = []
 	var added: Dictionary = {}
 	var age = NPCDataManager.get_age_from_gender_key(gender_key)
 	var is_young = age.to_lower() == "young"
 	
-	# Cek apakah outfit adalah mod outfit (tidak ada JSON entry)
+	# Cek apakah outfit adalah mod outfit
 	var clean_outfit = ModLoader.strip_mod_prefix(outfit_name) if ModLoader.is_mod_asset(outfit_name) else outfit_name
 	var json_entries = _data_manager.get_hair_types(clean_outfit, gender_key)
 	
-	# Jika tidak ada JSON entry (termasuk mod outfit), gunakan SEMUA hair dari folder
+	# Jika tidak ada JSON entry, scan dari folder
 	if json_entries.is_empty():
-		return scan_hair_assets_from_folder(gender_key)
+		return _scan_hair_assets_from_folder(gender_key)
 	
 	# Jika ada JSON entry, filter berdasarkan asset yang ada
 	for entry in json_entries:
@@ -404,33 +291,34 @@ func get_valid_hair_types(outfit_name: String, gender_key: String) -> Array:
 		if has_hair_asset(hair_name, gender_key):
 			var key = hair_name.to_lower()
 			if not added.has(key):
-				result.append(entry)
+				result.append(hair_name)
 				added[key] = true
 	
-	# Untuk young: SELALU tambahkan mod hair dengan prefix [MOD] ke semua outfit
+	# Untuk young: tambahkan mod hair dengan prefix [MOD]
 	if is_young:
 		var mod_assets = _mod_loader.get_mod_assets("hair", gender_key)
 		for display_name in mod_assets.keys():
 			var key = display_name.to_lower()
 			if not added.has(key):
 				var mod_display_name = ModLoader.MOD_PREFIX + display_name
-				result.append([mod_display_name, 1])
+				result.append(mod_display_name)
 				added[key] = true
 	
 	# Jika masih kosong, fallback ke scan folder
 	if result.is_empty():
-		return scan_hair_assets_from_folder(gender_key)
+		return _scan_hair_assets_from_folder(gender_key)
 	
 	return result
 
-## GET valid accessories untuk outfit dan gender
-## Jika tidak ada JSON entry, scan dari folder assets
+## GET valid accessories untuk outfit dan gender - dari JSON
+## Return: Array[String] - pure list of accessory names
 func get_valid_accessories(outfit_name: String, gender_key: String) -> Array:
 	var result: Array = []
 	var added: Dictionary = {}
 	var age = NPCDataManager.get_age_from_gender_key(gender_key)
 	var is_young = age.to_lower() == "young"
-	var json_entries = _data_manager.get_accessories(outfit_name, gender_key)
+	var clean_outfit = ModLoader.strip_mod_prefix(outfit_name) if ModLoader.is_mod_asset(outfit_name) else outfit_name
+	var json_entries = _data_manager.get_accessories(clean_outfit, gender_key)
 	
 	# Jika ada JSON entry, filter berdasarkan asset yang ada
 	if not json_entries.is_empty():
@@ -439,65 +327,127 @@ func get_valid_accessories(outfit_name: String, gender_key: String) -> Array:
 			if has_accessory_asset(acc_name, gender_key):
 				var key = acc_name.to_lower()
 				if not added.has(key):
-					result.append(entry)
+					result.append(acc_name)
 					added[key] = true
 	
-	# Untuk young: SELALU tambahkan mod accessories dengan prefix [MOD] ke semua outfit
+	# Untuk young: tambahkan mod accessories dengan prefix [MOD]
 	if is_young:
 		var mod_assets = _mod_loader.get_mod_assets("accessory", gender_key)
 		for display_name in mod_assets.keys():
 			var key = display_name.to_lower()
 			if not added.has(key):
 				var mod_display_name = ModLoader.MOD_PREFIX + display_name
-				result.append([mod_display_name, 1])
+				result.append(mod_display_name)
 				added[key] = true
 	
 	# Jika masih kosong, fallback ke scan folder
 	if result.is_empty():
-		return scan_accessory_assets_from_folder(gender_key)
+		return _scan_accessory_assets_from_folder(gender_key)
 	
 	return result
 
-## Filter skin tones dari array of [color_name, weight]
-func _filter_skin_tones(colors_array: Array) -> Array:
+## Scan folder untuk mendapatkan semua hair assets untuk gender_key
+func _scan_hair_assets_from_folder(gender_key: String) -> Array:
 	var result: Array = []
-	for entry in colors_array:
-		var color_name: String = entry[0] if entry is Array else str(entry)
-		if not (color_name in SKIN_TONE_COLORS):
-			result.append(entry)
+	var added: Dictionary = {}
+	var age = NPCDataManager.get_age_from_gender_key(gender_key)
+	var gender = NPCDataManager.get_gender_from_gender_key(gender_key)
+	var prefix = NPCDataManager.build_gender_prefix(gender_key)
+	var is_young = age.to_lower() == "young"
+	
+	if is_young:
+		var folder_path = "res://NPC/Hairs/%s/%s" % [age, gender]
+		var dir = DirAccess.open(folder_path)
+		if dir != null:
+			dir.list_dir_begin()
+			var file_name = dir.get_next()
+			while file_name != "":
+				if not dir.current_is_dir() and file_name.to_lower().ends_with(".png"):
+					var display_name = _extract_hair_display_name(file_name, prefix)
+					var key = display_name.to_lower()
+					if not display_name.is_empty() and not added.has(key):
+						result.append(display_name)
+						added[key] = true
+				file_name = dir.get_next()
+			dir.list_dir_end()
+		
+		var mod_assets = _mod_loader.get_mod_assets("hair", gender_key)
+		for display_name in mod_assets.keys():
+			var key = display_name.to_lower()
+			if not added.has(key):
+				var mod_display_name = ModLoader.MOD_PREFIX + display_name
+				result.append(mod_display_name)
+				added[key] = true
+	else:
+		var mods_path = _mod_loader.get_mods_path()
+		var folder_path = mods_path.path_join("NPC/Hairs/%s/%s" % [age, gender])
+		var dir = DirAccess.open(folder_path)
+		if dir != null:
+			dir.list_dir_begin()
+			var file_name = dir.get_next()
+			while file_name != "":
+				if not dir.current_is_dir() and file_name.to_lower().ends_with(".png"):
+					var display_name = _extract_hair_display_name(file_name, prefix)
+					var key = display_name.to_lower()
+					if not display_name.is_empty() and not added.has(key):
+						result.append(display_name)
+						added[key] = true
+				file_name = dir.get_next()
+			dir.list_dir_end()
+	
 	return result
 
-## GET valid hair colors untuk outfit dan gender
-func get_valid_hair_colors(outfit_name: String, gender_key: String) -> Array:
-	var json_entries = _data_manager.get_hair_colors(outfit_name, gender_key)
-	if not json_entries.is_empty():
-		return _filter_skin_tones(json_entries)
-	return get_all_color_options()
-
-## GET valid accessory colors untuk outfit dan gender
-func get_valid_accessory_colors(outfit_name: String, gender_key: String) -> Array:
-	var json_entries = _data_manager.get_accessory_colors(outfit_name, gender_key)
-	if not json_entries.is_empty():
-		return _filter_skin_tones(json_entries)
-	return get_all_color_options()
-
-## GET valid outfit colors untuk outfit dan gender
-func get_valid_outfit_colors(outfit_name: String, gender_key: String) -> Array:
-	var json_entries = _data_manager.get_outfit_colors(outfit_name, gender_key)
-	if not json_entries.is_empty():
-		return _filter_skin_tones(json_entries)
-	return get_all_color_options()
-
-## GET valid eye colors untuk outfit dan gender
-func get_valid_eye_colors(outfit_name: String, gender_key: String) -> Array:
-	var json_entries = _data_manager.get_eye_colors(outfit_name, gender_key)
-	if not json_entries.is_empty():
-		return _filter_skin_tones(json_entries)
-	return get_all_color_options()
-
-## GET valid body colors untuk outfit dan gender
-func get_valid_body_colors(outfit_name: String, gender_key: String) -> Array:
-	var json_entries = _data_manager.get_body_colors(outfit_name, gender_key)
-	if not json_entries.is_empty():
-		return json_entries
-	return get_skin_tone_options()
+## Scan folder untuk mendapatkan semua accessory assets untuk gender_key
+func _scan_accessory_assets_from_folder(gender_key: String) -> Array:
+	var result: Array = []
+	var added: Dictionary = {}
+	
+	result.append("none")
+	added["none"] = true
+	
+	var age = NPCDataManager.get_age_from_gender_key(gender_key)
+	var gender = NPCDataManager.get_gender_from_gender_key(gender_key)
+	var prefix = NPCDataManager.build_gender_prefix(gender_key)
+	var is_young = age.to_lower() == "young"
+	
+	if is_young:
+		var folder_path = "res://NPC/Accessories/%s/%s" % [age, gender]
+		var dir = DirAccess.open(folder_path)
+		if dir != null:
+			dir.list_dir_begin()
+			var file_name = dir.get_next()
+			while file_name != "":
+				if not dir.current_is_dir() and file_name.to_lower().ends_with(".png"):
+					var display_name = _extract_accessory_display_name(file_name, prefix)
+					var key = display_name.to_lower()
+					if not display_name.is_empty() and not added.has(key):
+						result.append(display_name)
+						added[key] = true
+				file_name = dir.get_next()
+			dir.list_dir_end()
+		
+		var mod_assets = _mod_loader.get_mod_assets("accessory", gender_key)
+		for display_name in mod_assets.keys():
+			var key = display_name.to_lower()
+			if not added.has(key):
+				var mod_display_name = ModLoader.MOD_PREFIX + display_name
+				result.append(mod_display_name)
+				added[key] = true
+	else:
+		var mods_path = _mod_loader.get_mods_path()
+		var folder_path = mods_path.path_join("NPC/Accessories/%s/%s" % [age, gender])
+		var dir = DirAccess.open(folder_path)
+		if dir != null:
+			dir.list_dir_begin()
+			var file_name = dir.get_next()
+			while file_name != "":
+				if not dir.current_is_dir() and file_name.to_lower().ends_with(".png"):
+					var display_name = _extract_accessory_display_name(file_name, prefix)
+					var key = display_name.to_lower()
+					if not display_name.is_empty() and not added.has(key):
+						result.append(display_name)
+						added[key] = true
+				file_name = dir.get_next()
+			dir.list_dir_end()
+	
+	return result
