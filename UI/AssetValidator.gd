@@ -219,6 +219,17 @@ func has_accessory_asset(acc_name: String, gender_key: String) -> bool:
 	var path = "res://NPC/Accessories/%s/%s/character_large_%s_accessory_%s.png" % [age, gender, prefix, filename]
 	return ResourceLoader.exists(path)
 
+## Resolve actual PNG filename from directory listing entry.
+## In exported builds, DirAccess lists .import files instead of original .png files.
+## Returns the original .png filename, or empty string if not a PNG asset.
+static func _resolve_png_filename(file_name: String) -> String:
+	var lower = file_name.to_lower()
+	if lower.ends_with(".png"):
+		return file_name
+	if lower.ends_with(".png.import"):
+		return file_name.trim_suffix(".import")
+	return ""
+
 ## Extract display name dari filename hair
 func _extract_hair_display_name(file_name: String, _prefix: String) -> String:
 	var base = file_name.get_basename().to_lower()
@@ -287,12 +298,14 @@ func get_valid_hair_types(gender_key: String) -> Array:
 			dir.list_dir_begin()
 			var file_name = dir.get_next()
 			while file_name != "":
-				if not dir.current_is_dir() and file_name.to_lower().ends_with(".png"):
-					var display_name = _extract_hair_display_name(file_name, prefix)
-					var key = display_name.to_lower()
-					if not display_name.is_empty() and not added.has(key):
-						result.append(display_name)
-						added[key] = true
+				if not dir.current_is_dir():
+					var png_name = _resolve_png_filename(file_name)
+					if not png_name.is_empty():
+						var display_name = _extract_hair_display_name(png_name, prefix)
+						var key = display_name.to_lower()
+						if not display_name.is_empty() and not added.has(key):
+							result.append(display_name)
+							added[key] = true
 				file_name = dir.get_next()
 			dir.list_dir_end()
 		
@@ -347,12 +360,14 @@ func get_valid_accessories(gender_key: String) -> Array:
 			dir.list_dir_begin()
 			var file_name = dir.get_next()
 			while file_name != "":
-				if not dir.current_is_dir() and file_name.to_lower().ends_with(".png"):
-					var display_name = _extract_accessory_display_name(file_name, prefix)
-					var key = display_name.to_lower()
-					if not display_name.is_empty() and not added.has(key):
-						result.append(display_name)
-						added[key] = true
+				if not dir.current_is_dir():
+					var png_name = _resolve_png_filename(file_name)
+					if not png_name.is_empty():
+						var display_name = _extract_accessory_display_name(png_name, prefix)
+						var key = display_name.to_lower()
+						if not display_name.is_empty() and not added.has(key):
+							result.append(display_name)
+							added[key] = true
 				file_name = dir.get_next()
 			dir.list_dir_end()
 		
