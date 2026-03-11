@@ -40,11 +40,10 @@ static func generate_random_with_validator(asset_validator: AssetValidator, npc_
 	config.npc_type = npc_type
 	config.gender = gender
 	
-	# GET properties dari AssetValidator
-	# Hair/Acc masih dari JSON per outfit, Colors dari dictionary
-	var hair_types = asset_validator.get_valid_hair_types(npc_type, gender)
+	# GET properties dari AssetValidator (sudah return Array[String])
+	var hair_types = asset_validator.get_valid_hair_types(gender)
 	var hair_colors = asset_validator.get_all_color_options()
-	var accessories = asset_validator.get_valid_accessories(npc_type, gender)
+	var accessories = asset_validator.get_valid_accessories(gender)
 	var accessory_colors = asset_validator.get_all_color_options()
 	var outfit_colors = asset_validator.get_all_color_options()
 	var eye_colors = asset_validator.get_all_color_options()

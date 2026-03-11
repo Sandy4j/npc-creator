@@ -76,16 +76,6 @@ func get_npc_properties(npc_type: String, gender: String) -> Dictionary:
 		return {}
 	return outfit_types[npc_type][gender]
 
-## GET tipe rambut dari JSON
-func get_hair_types(npc_type: String, gender: String) -> Array:
-	var props = get_npc_properties(npc_type, gender)
-	return props.get("hair_type", [])
-
-## GET accessories dari JSON
-func get_accessories(npc_type: String, gender: String) -> Array:
-	var props = get_npc_properties(npc_type, gender)
-	return props.get("accessories", [])
-
 
 
 ## GET nama color

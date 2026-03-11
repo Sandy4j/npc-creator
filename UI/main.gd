@@ -130,11 +130,11 @@ func _update_outfit_options() -> void:
 func _update_property_options() -> void:
 	_populate_option_button(
 		option_hair_type,
-		_asset_validator.get_valid_hair_types(_current_outfit, _current_gender)
+		_asset_validator.get_valid_hair_types(_current_gender)
 	)
 	_populate_option_button(
 		option_accessory,
-		_asset_validator.get_valid_accessories(_current_outfit, _current_gender)
+		_asset_validator.get_valid_accessories(_current_gender)
 	)
 	
 	# Populate color pickers - semua menggunakan colors dictionary langsung
